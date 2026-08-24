@@ -15,10 +15,14 @@ export async function POST(req: Request) {
     }
 
     const { branding, data } = result.data;
+    
+    const host = req.headers.get("host") || "localhost:3000";
+    const protocol = host.includes("localhost") ? "http" : "https";
+    const origin = `${protocol}://${host}`;
 
     // React-PDF expects a valid React element to render
     // eslint-disable-next-line react-hooks/error-boundaries
-    const doc = <ModernClassicCert data={data} branding={branding} />;
+    const doc = <ModernClassicCert data={data} branding={branding} origin={origin} />;
 
     // Render directly to a Node stream
     const stream = await renderToStream(doc);

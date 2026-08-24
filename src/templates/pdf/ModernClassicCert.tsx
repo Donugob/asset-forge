@@ -1,56 +1,28 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Font, Svg, Circle, Path } from '@react-pdf/renderer';
 
-// Register a script font for the signatures
-Font.register({
-  family: 'Great Vibes',
-  src: 'https://fonts.gstatic.com/s/greatvibes/v14/RWmMoKWR9v4ksMfaWd_JN9XFiaQ.ttf',
-});
-
-// Register a bold sans-serif font for the main text
-Font.register({
-  family: 'Montserrat',
-  fonts: [
-    { src: 'https://fonts.gstatic.com/s/montserrat/v25/JTUHjIg1_i6t8kCHKm4532VJOt5-QNF37c0.ttf', fontWeight: 400 },
-    { src: 'https://fonts.gstatic.com/s/montserrat/v25/JTUHjIg1_i6t8kCHKm4532VJOt5-QNF37c0.ttf', fontWeight: 700 }, // using normal as fallback for now
-    { src: 'https://fonts.gstatic.com/s/montserrat/v25/JTUHjIg1_i6t8kCHKm4532VJOt5-QNF37c0.ttf', fontWeight: 900 },
-  ]
-});
-
-// The Dot Grid component
-const DotGrid = ({ x, y }: { x: number, y: number }) => {
-  return (
-    <Svg width="40" height="60" style={{ position: 'absolute', top: y, left: x, opacity: 0.5 }}>
-      {Array.from({ length: 4 }).map((_, col) => 
-        Array.from({ length: 5 }).map((_, row) => (
-          <Circle key={`${col}-${row}`} cx={col * 10 + 5} cy={row * 10 + 5} r="1.5" fill="#FFFFFF" />
-        ))
-      )}
-    </Svg>
-  );
-};
-
-// The Ribbon Badge component
-const RibbonBadge = () => (
-  <View style={{ position: 'absolute', bottom: 50, left: '50%', transform: 'translateX(-40px)', width: 80, height: 100, alignItems: 'center' }}>
-    {/* Ribbon tails */}
-    <Svg width="80" height="80" style={{ position: 'absolute', top: 30 }}>
-      <Path d="M20 0 L10 70 L30 60 Z" fill="#296b99" />
-      <Path d="M60 0 L70 70 L50 60 Z" fill="#296b99" />
-      <Path d="M25 0 L15 65 L35 55 Z" fill="#3a8ac0" />
-      <Path d="M55 0 L65 65 L45 55 Z" fill="#3a8ac0" />
-    </Svg>
-    {/* Badge circle */}
-    <Svg width="60" height="60" style={{ position: 'absolute', top: 0 }}>
-      <Circle cx="30" cy="30" r="28" fill="#8cbde1" />
-      <Circle cx="30" cy="30" r="24" fill="#f8e7b9" />
-      <Circle cx="30" cy="30" r="20" fill="#f0d588" />
-    </Svg>
-  </View>
-);
-
-export const ModernClassicCert = ({ data, branding }: { data: Record<string, string>, branding?: Record<string, string> }) => {
+export const ModernClassicCert = ({ data, branding, origin = '' }: { data: Record<string, string>, branding?: Record<string, string>, origin?: string }) => {
   
+  // Register fonts dynamically to avoid Google Fonts changing hashed URLs
+  // Only register if they haven't been registered yet
+  if (!Font.getRegisteredFontFamilies().includes('Great Vibes')) {
+    Font.register({
+      family: 'Great Vibes',
+      src: `${origin}/fonts/GreatVibes-Regular.ttf`,
+    });
+  }
+
+  if (!Font.getRegisteredFontFamilies().includes('Montserrat')) {
+    Font.register({
+      family: 'Montserrat',
+      fonts: [
+        { src: `${origin}/fonts/Montserrat-Regular.ttf`, fontWeight: 400 },
+        { src: `${origin}/fonts/Montserrat-Bold.ttf`, fontWeight: 700 },
+        { src: `${origin}/fonts/Montserrat-Black.ttf`, fontWeight: 900 },
+      ]
+    });
+  }
+
   const bgColor = branding?.background_color || '#103957';
   const primaryColor = branding?.primary_color || '#3a8ac0';
   
@@ -145,6 +117,34 @@ export const ModernClassicCert = ({ data, branding }: { data: Record<string, str
       color: '#FFFFFF',
     }
   });
+
+  const DotGrid = ({ x, y }: { x: number, y: number }) => {
+    return (
+      <Svg width="40" height="60" style={{ position: 'absolute', top: y, left: x, opacity: 0.5 }}>
+        {Array.from({ length: 4 }).map((_, col) => 
+          Array.from({ length: 5 }).map((_, row) => (
+            <Circle key={`${col}-${row}`} cx={col * 10 + 5} cy={row * 10 + 5} r="1.5" fill="#FFFFFF" />
+          ))
+        )}
+      </Svg>
+    );
+  };
+
+  const RibbonBadge = () => (
+    <View style={{ position: 'absolute', bottom: 50, left: '50%', transform: 'translateX(-40px)', width: 80, height: 100, alignItems: 'center' }}>
+      <Svg width="80" height="80" style={{ position: 'absolute', top: 30 }}>
+        <Path d="M20 0 L10 70 L30 60 Z" fill="#296b99" />
+        <Path d="M60 0 L70 70 L50 60 Z" fill="#296b99" />
+        <Path d="M25 0 L15 65 L35 55 Z" fill="#3a8ac0" />
+        <Path d="M55 0 L65 65 L45 55 Z" fill="#3a8ac0" />
+      </Svg>
+      <Svg width="60" height="60" style={{ position: 'absolute', top: 0 }}>
+        <Circle cx="30" cy="30" r="28" fill="#8cbde1" />
+        <Circle cx="30" cy="30" r="24" fill="#f8e7b9" />
+        <Circle cx="30" cy="30" r="20" fill="#f0d588" />
+      </Svg>
+    </View>
+  );
 
   return (
     <Document>
