@@ -3,8 +3,8 @@ import { generatePayloadSchema } from "@/lib/schema";
 import satori from "satori";
 import { Resvg } from "@resvg/resvg-js";
 import { SocialFlyer } from "@/templates/image/SocialFlyer";
-import fs from "fs/promises";
-import path from "path";
+
+
 
 export async function POST(req: Request) {
   try {
@@ -16,7 +16,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid payload", details: result.error.errors }, { status: 400 });
     }
 
-    const { template_id, branding, data } = result.data;
+    const { branding, data } = result.data;
 
     // TODO: Dynamic template selection based on template_id
     const element = SocialFlyer({ data, branding });
@@ -59,7 +59,7 @@ export async function POST(req: Request) {
       },
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Image Generation Error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const SocialFlyer = ({ data, branding }: { data: any, branding?: any }) => {
+export const SocialFlyer = ({ data, branding }: { data: Record<string, string>, branding?: Record<string, string> }) => {
   const primaryColor = branding?.primary_color || '#10B981';
   const bgColor = branding?.background_color || '#111827';
   

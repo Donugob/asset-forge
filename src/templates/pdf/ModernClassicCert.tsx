@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export const ModernClassicCert = ({ data, branding }: { data: any, branding?: any }) => (
+export const ModernClassicCert = ({ data, branding }: { data: Record<string, string>, branding?: Record<string, string> }) => (
   <Document>
     <Page size="A4" orientation="landscape" style={styles.page}>
       <View style={[styles.container, branding?.primary_color && { borderColor: branding.primary_color }]}>

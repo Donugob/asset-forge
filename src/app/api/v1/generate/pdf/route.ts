@@ -14,7 +14,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid payload", details: result.error.errors }, { status: 400 });
     }
 
-    const { template_id, branding, data } = result.data;
+    const { branding, data } = result.data;
 
     // React-PDF expects a valid React element to render
     const doc = React.createElement(ModernClassicCert, { data, branding });
@@ -38,7 +38,7 @@ export async function POST(req: Request) {
       },
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("PDF Generation Error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }

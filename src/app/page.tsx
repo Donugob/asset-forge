@@ -47,8 +47,8 @@ export default function Home() {
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
       setPreviewUrl(url);
-    } catch (err: any) {
-      setError(err.message || "Invalid JSON payload");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Invalid JSON payload");
       setPreviewUrl(null);
     } finally {
       setIsGenerating(false);
