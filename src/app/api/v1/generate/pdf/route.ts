@@ -11,13 +11,13 @@ export async function POST(req: Request) {
     // Strict Payload Validation
     const result = generatePayloadSchema.safeParse(json);
     if (!result.success) {
-      return NextResponse.json({ error: "Invalid payload", details: result.error.errors }, { status: 400 });
+      return NextResponse.json({ error: "Invalid payload", details: result.error.issues }, { status: 400 });
     }
 
     const { branding, data } = result.data;
 
     // React-PDF expects a valid React element to render
-    const doc = React.createElement(ModernClassicCert, { data, branding });
+    const doc = React.createElement(ModernClassicCert as any, { data, branding });
 
     // Render directly to a Node stream
     const stream = await renderToStream(doc);

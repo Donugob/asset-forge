@@ -7,7 +7,7 @@ export const generatePayloadSchema = z.object({
     background_color: z.string().regex(/^#[0-9A-Fa-f]{6}$/).optional(),
     font_family: z.string().optional(),
   }).optional(),
-  data: z.record(z.any()).refine((val) => Object.keys(val).length > 0, {
+  data: z.record(z.string()).refine((val) => Object.keys(val).length > 0, {
     message: "Data payload cannot be empty",
   }),
 });

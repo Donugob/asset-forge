@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     // Strict Payload Validation
     const result = generatePayloadSchema.safeParse(json);
     if (!result.success) {
-      return NextResponse.json({ error: "Invalid payload", details: result.error.errors }, { status: 400 });
+      return NextResponse.json({ error: "Invalid payload", details: result.error.issues }, { status: 400 });
     }
 
     const { branding, data } = result.data;
@@ -52,7 +52,7 @@ export async function POST(req: Request) {
     const pngBuffer = pngData.asPng();
 
     // 3. Return the raw image buffer
-    return new NextResponse(pngBuffer, {
+    return new NextResponse(new Uint8Array(pngBuffer), {
       headers: {
         "Content-Type": "image/png",
         "Cache-Control": "public, max-age=31536000, immutable",

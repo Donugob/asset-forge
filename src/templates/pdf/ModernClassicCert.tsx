@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
 export const ModernClassicCert = ({ data, branding }: { data: Record<string, string>, branding?: Record<string, string> }) => (
   <Document>
     <Page size="A4" orientation="landscape" style={styles.page}>
-      <View style={[styles.container, branding?.primary_color && { borderColor: branding.primary_color }]}>
+      <View style={[styles.container, branding?.primary_color ? { borderColor: branding.primary_color } : {}]}>
         <Text style={styles.title}>{data.title || 'Certificate of Excellence'}</Text>
         <Text style={styles.subtitle}>This is proudly presented to</Text>
         <Text style={styles.name}>{data.recipient_name || 'Recipient Name'}</Text>
