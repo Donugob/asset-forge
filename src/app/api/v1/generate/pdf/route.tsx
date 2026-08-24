@@ -41,7 +41,7 @@ export async function POST(req: Request) {
 
   } catch (error: unknown) {
     console.error("PDF Generation Error:", error);
-    return NextResponse.json({ error: error?.message || "Internal Server Error", stack: error?.stack }, { status: 500 });
+    return NextResponse.json({ error: error instanceof Error ? error.message : "Unknown error" || "Internal Server Error", stack: error instanceof Error ? error.stack : undefined }, { status: 500 });
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
