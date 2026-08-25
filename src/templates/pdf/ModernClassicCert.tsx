@@ -3,7 +3,6 @@ import { Document, Page, Text, View, StyleSheet, Font, Svg, Circle, Path } from 
 
 export const ModernClassicCert = ({ data, branding, origin = '' }: { data: Record<string, string>, branding?: Record<string, string>, origin?: string }) => {
   
-  // Register fonts dynamically to avoid Google Fonts changing hashed URLs
   if (!Font.getRegisteredFontFamilies().includes('Great Vibes')) {
     Font.register({
       family: 'Great Vibes',
@@ -25,6 +24,21 @@ export const ModernClassicCert = ({ data, branding, origin = '' }: { data: Recor
   const bgColor = branding?.background_color || '#103957';
   const primaryColor = branding?.primary_color || '#3a8ac0';
   
+  // Extract values
+  const title = data.title?.toUpperCase() || 'CERTIFICATE';
+  const subtitle = data.event_name?.toUpperCase() || 'OF ACHIEVEMENT';
+  const name = data.recipient_name || 'Charlotte Newman';
+  
+  // Dynamic font scaling
+  const getDynamicFontSize = (text: string, maxSize: number, minSize: number, threshold: number) => {
+    if (text.length <= threshold) return maxSize;
+    const size = maxSize - (text.length - threshold) * 1.5;
+    return Math.max(size, minSize);
+  };
+
+  const titleFontSize = getDynamicFontSize(title, 52, 28, 12);
+  const nameFontSize = getDynamicFontSize(name, 48, 24, 16);
+  
   const styles = StyleSheet.create({
     page: {
       flexDirection: 'column',
@@ -33,18 +47,8 @@ export const ModernClassicCert = ({ data, branding, origin = '' }: { data: Recor
       fontFamily: 'Montserrat',
       overflow: 'hidden',
     },
-    // Corner shapes using absolute positioning and SVG
-    shapeTopLeft: {
-      position: 'absolute',
-      top: -100,
-      left: -100,
-    },
-    shapeBottomRight: {
-      position: 'absolute',
-      bottom: -100,
-      right: -100,
-      transform: 'rotate(180deg)',
-    },
+    shapeTopLeft: { position: 'absolute', top: -100, left: -100 },
+    shapeBottomRight: { position: 'absolute', bottom: -100, right: -100, transform: 'rotate(180deg)' },
     content: {
       flex: 1,
       padding: 60,
@@ -53,11 +57,12 @@ export const ModernClassicCert = ({ data, branding, origin = '' }: { data: Recor
       zIndex: 10,
     },
     title: {
-      fontSize: 52,
+      fontSize: titleFontSize,
       fontWeight: 900,
       letterSpacing: 2,
       marginBottom: 5,
       color: '#FFFFFF',
+      textAlign: 'center',
     },
     subtitle: {
       fontSize: 14,
@@ -66,6 +71,7 @@ export const ModernClassicCert = ({ data, branding, origin = '' }: { data: Recor
       marginBottom: 40,
       color: '#FFFFFF',
       textTransform: 'uppercase',
+      textAlign: 'center',
     },
     presentedTo: {
       fontSize: 12,
@@ -73,16 +79,17 @@ export const ModernClassicCert = ({ data, branding, origin = '' }: { data: Recor
       color: '#c2dbef',
     },
     name: {
-      fontSize: 48,
+      fontSize: nameFontSize,
       fontWeight: 900,
       marginBottom: 15,
       color: primaryColor,
+      textAlign: 'center',
     },
     description: {
       fontSize: 11,
       color: '#c2dbef',
       textAlign: 'center',
-      width: '70%',
+      width: '75%',
       lineHeight: 1.5,
       marginBottom: 70,
     },
@@ -93,10 +100,7 @@ export const ModernClassicCert = ({ data, branding, origin = '' }: { data: Recor
       position: 'absolute',
       bottom: 80,
     },
-    signatureBlock: {
-      alignItems: 'center',
-      width: 150,
-    },
+    signatureBlock: { alignItems: 'center', width: 150 },
     signatureImage: {
       fontFamily: 'Great Vibes',
       fontSize: 36,
@@ -117,19 +121,17 @@ export const ModernClassicCert = ({ data, branding, origin = '' }: { data: Recor
     }
   });
 
-  const DotGrid = ({ x, y }: { x: number, y: number }) => {
-    return (
-      <View style={{ position: 'absolute', top: y, left: x, opacity: 0.5 }} fixed>
-        <Svg width="40" height="60">
-          {Array.from({ length: 4 }).map((_, col) => 
-            Array.from({ length: 5 }).map((_, row) => (
-              <Circle key={`${col}-${row}`} cx={col * 10 + 5} cy={row * 10 + 5} r="1.5" fill="#FFFFFF" />
-            ))
-          )}
-        </Svg>
-      </View>
-    );
-  };
+  const DotGrid = ({ x, y }: { x: number, y: number }) => (
+    <View style={{ position: 'absolute', top: y, left: x, opacity: 0.5 }} fixed>
+      <Svg width="40" height="60">
+        {Array.from({ length: 4 }).map((_, col) => 
+          Array.from({ length: 5 }).map((_, row) => (
+            <Circle key={`${col}-${row}`} cx={col * 10 + 5} cy={row * 10 + 5} r="1.5" fill="#FFFFFF" />
+          ))
+        )}
+      </Svg>
+    </View>
+  );
 
   const RibbonBadge = () => (
     <View style={{ position: 'absolute', bottom: 50, left: '50%', transform: 'translateX(-40px)', width: 80, height: 100, alignItems: 'center' }} fixed>
@@ -151,7 +153,6 @@ export const ModernClassicCert = ({ data, branding, origin = '' }: { data: Recor
     <Document>
       <Page size="A4" orientation="landscape" style={styles.page}>
         
-        {/* Background Overlay Shapes */}
         <View style={styles.shapeTopLeft} fixed>
           <Svg width="400" height="400">
             <Path d="M0,0 L400,0 L0,400 Z" fill="#0d2c44" />
@@ -168,24 +169,21 @@ export const ModernClassicCert = ({ data, branding, origin = '' }: { data: Recor
           </Svg>
         </View>
 
-        {/* Decorative elements */}
         <DotGrid x={40} y={120} />
         <DotGrid x={760} y={220} />
 
-        {/* Main Content */}
         <View style={styles.content}>
-          <Text style={styles.title}>{data.title?.toUpperCase() || 'CERTIFICATE'}</Text>
-          <Text style={styles.subtitle}>{data.event_name?.toUpperCase() || 'OF ACHIEVEMENT'}</Text>
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.subtitle}>{subtitle}</Text>
           
           <Text style={styles.presentedTo}>This certificate is proudly presented to</Text>
           
-          <Text style={styles.name}>{data.recipient_name || 'Charlotte Newman'}</Text>
+          <Text style={styles.name}>{name}</Text>
           
           <Text style={styles.description}>
             {data.description || 'The participant has demonstrated dedication, commitment, and a strong willingness to learn throughout the program.'}
           </Text>
           
-          {/* Signatures */}
           <View style={styles.signaturesContainer}>
             <View style={styles.signatureBlock}>
               <Text style={styles.signatureImage}>Hannah Porter</Text>
@@ -201,7 +199,6 @@ export const ModernClassicCert = ({ data, branding, origin = '' }: { data: Recor
           </View>
         </View>
 
-        {/* Ribbon Badge */}
         <RibbonBadge />
 
       </Page>
