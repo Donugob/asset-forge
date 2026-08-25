@@ -39,6 +39,7 @@ export const LuxuryGoldCert = ({ data, branding, features, origin = '' }: { data
   const showCornerShapes = features?.show_corner_shapes ?? true;
   const showRibbonBadge = features?.show_ribbon_badge ?? true;
   const showSignatures = features?.show_signatures ?? true;
+  const showTrophy = features?.show_dot_grid ?? true;
   const showEventName = features?.show_event_name ?? true;
   const showDescription = features?.show_description ?? true;
 
@@ -151,6 +152,14 @@ export const LuxuryGoldCert = ({ data, branding, features, origin = '' }: { data
     signatureBlock: {
       alignItems: 'center',
       width: 120,
+    },
+    signatureImage: {
+      fontFamily: 'Great Vibes',
+      fontSize: 28,
+      color: primaryColor,
+      marginBottom: -10,
+      transform: 'rotate(-5deg)',
+      zIndex: 20,
     },
     signatureLine: {
       width: '100%',
@@ -285,16 +294,18 @@ export const LuxuryGoldCert = ({ data, branding, features, origin = '' }: { data
           <View style={styles.bottomSection}>
             {showSignatures ? (
               <View style={styles.signatureBlock}>
+                <Text style={styles.signatureImage}>{data.signature_1_name || 'Hannah Porter'}</Text>
                 <View style={styles.signatureLine} />
                 <Text style={styles.signatureName}>{data.signature_1_name || 'NAME'}</Text>
                 <Text style={styles.signatureTitle}>{data.signature_1_title || 'Position'}</Text>
               </View>
             ) : <View style={styles.signatureBlock} />}
             
-            <TrophyLaurel />
+            {showTrophy ? <TrophyLaurel /> : <View style={{ width: 80 }} />}
 
             {showSignatures ? (
               <View style={styles.signatureBlock}>
+                <Text style={styles.signatureImage}>{data.signature_2_name || 'Callum Price'}</Text>
                 <View style={styles.signatureLine} />
                 <Text style={styles.signatureName}>{data.signature_2_name || 'NAME'}</Text>
                 <Text style={styles.signatureTitle}>{data.signature_2_title || 'Position'}</Text>

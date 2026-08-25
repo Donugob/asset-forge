@@ -227,16 +227,32 @@ export default function Home() {
               <div className="grid grid-cols-2 gap-3">
                 <label className="flex items-center gap-2 cursor-pointer group">
                   <input type="checkbox" checked={showCornerShapes} onChange={(e) => setShowCornerShapes(e.target.checked)} className="w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500" />
-                  <span className="text-sm text-neutral-600 group-hover:text-neutral-900 transition-colors">Corner Shapes</span>
+                  <span className="text-sm text-neutral-600 group-hover:text-neutral-900 transition-colors">
+                    {templateId === "luxury_gold" ? "Gold Waves" : "Corner Shapes"}
+                  </span>
                 </label>
-                <label className="flex items-center gap-2 cursor-pointer group">
-                  <input type="checkbox" checked={showDotGrid} onChange={(e) => setShowDotGrid(e.target.checked)} className="w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500" />
-                  <span className="text-sm text-neutral-600 group-hover:text-neutral-900 transition-colors">Dot Grids</span>
-                </label>
+                
+                {templateId === "geometric_horizon" && (
+                  <label className="flex items-center gap-2 cursor-pointer group">
+                    <input type="checkbox" checked={showDotGrid} onChange={(e) => setShowDotGrid(e.target.checked)} className="w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500" />
+                    <span className="text-sm text-neutral-600 group-hover:text-neutral-900 transition-colors">Dot Grids</span>
+                  </label>
+                )}
+
+                {templateId === "luxury_gold" && (
+                  <label className="flex items-center gap-2 cursor-pointer group">
+                    <input type="checkbox" checked={showDotGrid} onChange={(e) => setShowDotGrid(e.target.checked)} className="w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500" />
+                    <span className="text-sm text-neutral-600 group-hover:text-neutral-900 transition-colors">Trophy Graphic</span>
+                  </label>
+                )}
+
                 <label className="flex items-center gap-2 cursor-pointer group">
                   <input type="checkbox" checked={showRibbonBadge} onChange={(e) => setShowRibbonBadge(e.target.checked)} className="w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500" />
-                  <span className="text-sm text-neutral-600 group-hover:text-neutral-900 transition-colors">Ribbon Badge</span>
+                  <span className="text-sm text-neutral-600 group-hover:text-neutral-900 transition-colors">
+                    {templateId === "luxury_gold" ? "Golden Seal" : "Ribbon Badge"}
+                  </span>
                 </label>
+
                 <label className="flex items-center gap-2 cursor-pointer group">
                   <input type="checkbox" checked={showSignatures} onChange={(e) => setShowSignatures(e.target.checked)} className="w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500" />
                   <span className="text-sm text-neutral-600 group-hover:text-neutral-900 transition-colors">Signatures</span>
