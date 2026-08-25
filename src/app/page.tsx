@@ -24,6 +24,29 @@ export default function Home() {
   const [showRibbonBadge, setShowRibbonBadge] = useState(true);
   const [showSignatures, setShowSignatures] = useState(true);
 
+  // Template presets
+  useEffect(() => {
+    if (templateId === "luxury_gold") {
+      setPrimaryColor("#111111");
+      setBackgroundColor("#d8c3a5");
+      setTitle("CERTIFICATE");
+      setEventName("OF RECOGNITION");
+      setRecipientName("Harumi Kobayashi");
+      setSignature1("NAME");
+      setSignature2("NAME");
+      setDescription("In recognition of her great performance during the month of November 2023. As a tribute for her loyalty and efforts.");
+    } else if (templateId === "geometric_horizon") {
+      setPrimaryColor("#3a8ac0");
+      setBackgroundColor("#0d2c44");
+      setTitle("CERTIFICATE");
+      setEventName("OF ACHIEVEMENT");
+      setRecipientName("Charlotte Newman");
+      setSignature1("Hannah Porter");
+      setSignature2("Callum Price");
+      setDescription("The participant has demonstrated dedication, commitment, and a strong willingness to learn throughout the program.");
+    }
+  }, [templateId]);
+
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
