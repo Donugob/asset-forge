@@ -1,7 +1,7 @@
 import React from 'react';
-import { Document, Page, Text, View, StyleSheet, Font, Svg, Circle, Path } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, Font, Svg, Circle, Path, Polygon } from '@react-pdf/renderer';
 
-export const ModernClassicCert = ({ data, branding, origin = '' }: { data: Record<string, string>, branding?: Record<string, string>, origin?: string }) => {
+export const ModernClassicCert = ({ data, branding, features, origin = '' }: { data: Record<string, string>, branding?: Record<string, string>, features?: Record<string, boolean>, origin?: string }) => {
   
   if (!Font.getRegisteredFontFamilies().includes('Great Vibes')) {
     Font.register({
@@ -24,6 +24,14 @@ export const ModernClassicCert = ({ data, branding, origin = '' }: { data: Recor
   const bgColor = branding?.background_color || '#103957';
   const primaryColor = branding?.primary_color || '#3a8ac0';
   
+  // Features Defaults
+  const showCornerShapes = features?.show_corner_shapes ?? true;
+  const showDotGrid = features?.show_dot_grid ?? true;
+  const showRibbonBadge = features?.show_ribbon_badge ?? true;
+  const showSignatures = features?.show_signatures ?? true;
+  const showEventName = features?.show_event_name ?? true;
+  const showDescription = features?.show_description ?? true;
+
   // Extract values
   const title = data.title?.toUpperCase() || 'CERTIFICATE';
   const subtitle = data.event_name?.toUpperCase() || 'OF ACHIEVEMENT';
@@ -133,73 +141,95 @@ export const ModernClassicCert = ({ data, branding, origin = '' }: { data: Recor
     </View>
   );
 
-  const RibbonBadge = () => (
-    <View style={{ position: 'absolute', bottom: 50, left: '50%', transform: 'translateX(-40px)', width: 80, height: 100, alignItems: 'center' }} fixed>
-      <Svg width="80" height="80" style={{ position: 'absolute', top: 30 }}>
-        <Path d="M20 0 L10 70 L30 60 Z" fill="#296b99" />
-        <Path d="M60 0 L70 70 L50 60 Z" fill="#296b99" />
-        <Path d="M25 0 L15 65 L35 55 Z" fill="#3a8ac0" />
-        <Path d="M55 0 L65 65 L45 55 Z" fill="#3a8ac0" />
-      </Svg>
-      <Svg width="60" height="60" style={{ position: 'absolute', top: 0 }}>
-        <Circle cx="30" cy="30" r="28" fill="#8cbde1" />
-        <Circle cx="30" cy="30" r="24" fill="#f8e7b9" />
-        <Circle cx="30" cy="30" r="20" fill="#f0d588" />
-      </Svg>
-    </View>
-  );
+  // A more realistic badge with a starburst/scalloped polygon
+  const RibbonBadge = () => {
+    // Generate a 24-point star for the scalloped edge
+    const points = Array.from({ length: 48 }).map((_, i) => {
+      const radius = i % 2 === 0 ? 30 : 25;
+      const angle = (i * Math.PI) / 24;
+      return `${30 + radius * Math.cos(angle)},${30 + radius * Math.sin(angle)}`;
+    }).join(' ');
+
+    return (
+      <View style={{ position: 'absolute', bottom: 50, left: '50%', transform: 'translateX(-40px)', width: 80, height: 100, alignItems: 'center' }} fixed>
+        <Svg width="80" height="80" style={{ position: 'absolute', top: 30 }}>
+          <Path d="M20 0 L10 70 L30 60 Z" fill="#296b99" />
+          <Path d="M60 0 L70 70 L50 60 Z" fill="#296b99" />
+          <Path d="M25 0 L15 65 L35 55 Z" fill={primaryColor} />
+          <Path d="M55 0 L65 65 L45 55 Z" fill={primaryColor} />
+        </Svg>
+        <Svg width="60" height="60" style={{ position: 'absolute', top: 0 }}>
+          <Polygon points={points} fill="#c2dbef" />
+          <Circle cx="30" cy="30" r="22" fill="#f8e7b9" />
+          <Circle cx="30" cy="30" r="18" fill="#f0d588" />
+        </Svg>
+      </View>
+    );
+  };
 
   return (
     <Document>
       <Page size="A4" orientation="landscape" style={styles.page}>
         
-        <View style={styles.shapeTopLeft} fixed>
-          <Svg width="400" height="400">
-            <Path d="M0,0 L400,0 L0,400 Z" fill="#0d2c44" />
-            <Path d="M0,0 L300,0 L0,300 Z" fill={primaryColor} opacity="0.9" />
-            <Path d="M0,0 L150,0 L0,150 Z" fill="#FFFFFF" />
-          </Svg>
-        </View>
+        {showCornerShapes && (
+          <>
+            <View style={styles.shapeTopLeft} fixed>
+              <Svg width="400" height="400">
+                <Path d="M0,0 L400,0 L0,400 Z" fill="#0d2c44" />
+                <Path d="M0,0 L300,0 L0,300 Z" fill={primaryColor} opacity="0.9" />
+                <Path d="M0,0 L150,0 L0,150 Z" fill="#FFFFFF" />
+              </Svg>
+            </View>
 
-        <View style={styles.shapeBottomRight} fixed>
-          <Svg width="400" height="400">
-            <Path d="M0,0 L400,0 L0,400 Z" fill="#0d2c44" />
-            <Path d="M0,0 L300,0 L0,300 Z" fill={primaryColor} opacity="0.9" />
-            <Path d="M0,0 L150,0 L0,150 Z" fill="#FFFFFF" />
-          </Svg>
-        </View>
+            <View style={styles.shapeBottomRight} fixed>
+              <Svg width="400" height="400">
+                <Path d="M0,0 L400,0 L0,400 Z" fill="#0d2c44" />
+                <Path d="M0,0 L300,0 L0,300 Z" fill={primaryColor} opacity="0.9" />
+                <Path d="M0,0 L150,0 L0,150 Z" fill="#FFFFFF" />
+              </Svg>
+            </View>
+          </>
+        )}
 
-        <DotGrid x={40} y={120} />
-        <DotGrid x={760} y={220} />
+        {showDotGrid && (
+          <>
+            <DotGrid x={40} y={120} />
+            <DotGrid x={760} y={220} />
+          </>
+        )}
 
         <View style={styles.content}>
           <Text style={styles.title}>{title}</Text>
-          <Text style={styles.subtitle}>{subtitle}</Text>
+          {showEventName && <Text style={styles.subtitle}>{subtitle}</Text>}
           
           <Text style={styles.presentedTo}>This certificate is proudly presented to</Text>
           
           <Text style={styles.name}>{name}</Text>
           
-          <Text style={styles.description}>
-            {data.description || 'The participant has demonstrated dedication, commitment, and a strong willingness to learn throughout the program.'}
-          </Text>
+          {showDescription && (
+            <Text style={styles.description}>
+              {data.description || 'The participant has demonstrated dedication, commitment, and a strong willingness to learn throughout the program.'}
+            </Text>
+          )}
           
-          <View style={styles.signaturesContainer}>
-            <View style={styles.signatureBlock}>
-              <Text style={styles.signatureImage}>Hannah Porter</Text>
-              <View style={styles.signatureLine} />
-              <Text style={styles.signatureName}>Hannah Porter</Text>
+          {showSignatures && (
+            <View style={styles.signaturesContainer}>
+              <View style={styles.signatureBlock}>
+                <Text style={styles.signatureImage}>{data.signature_1_name || 'Hannah Porter'}</Text>
+                <View style={styles.signatureLine} />
+                <Text style={styles.signatureName}>{data.signature_1_title || data.signature_1_name || 'Hannah Porter'}</Text>
+              </View>
+              
+              <View style={styles.signatureBlock}>
+                <Text style={styles.signatureImage}>{data.signature_2_name || 'Callum Price'}</Text>
+                <View style={styles.signatureLine} />
+                <Text style={styles.signatureName}>{data.signature_2_title || data.signature_2_name || 'Callum Price'}</Text>
+              </View>
             </View>
-            
-            <View style={styles.signatureBlock}>
-              <Text style={styles.signatureImage}>Callum Price</Text>
-              <View style={styles.signatureLine} />
-              <Text style={styles.signatureName}>Callum Price</Text>
-            </View>
-          </View>
+          )}
         </View>
 
-        <RibbonBadge />
+        {showRibbonBadge && <RibbonBadge />}
 
       </Page>
     </Document>
