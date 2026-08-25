@@ -1,5 +1,5 @@
 import React from 'react';
-import { Document, Page, Text, View, StyleSheet, Font, Svg, Circle, Path, Polygon, Defs, LinearGradient, Stop } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, Font, Svg, Circle, Path, Defs, LinearGradient, Stop } from '@react-pdf/renderer';
 
 export const LuxuryGoldCert = ({ data, branding, features, origin = '' }: { data: Record<string, string>, branding?: Record<string, string>, features?: Record<string, boolean>, origin?: string }) => {
   
@@ -49,12 +49,12 @@ export const LuxuryGoldCert = ({ data, branding, features, origin = '' }: { data
   
   const getDynamicFontSize = (text: string, maxSize: number, minSize: number, threshold: number) => {
     if (text.length <= threshold) return maxSize;
-    const size = maxSize - (text.length - threshold) * 1.5;
+    const size = maxSize - (text.length - threshold) * 2;
     return Math.max(size, minSize);
   };
 
-  const titleFontSize = getDynamicFontSize(title, 42, 24, 15);
-  const nameFontSize = getDynamicFontSize(name, 56, 32, 16);
+  const titleFontSize = getDynamicFontSize(title, 52, 32, 12);
+  const nameFontSize = getDynamicFontSize(name, 72, 42, 16);
   
   const styles = StyleSheet.create({
     page: {
@@ -68,8 +68,8 @@ export const LuxuryGoldCert = ({ data, branding, features, origin = '' }: { data
       position: 'absolute',
       top: 0,
       left: 0,
-      right: 0,
-      bottom: 0,
+      width: '100%',
+      height: '100%',
       zIndex: -1,
     },
     content: {
@@ -82,50 +82,56 @@ export const LuxuryGoldCert = ({ data, branding, features, origin = '' }: { data
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'flex-start',
-      marginBottom: 30,
+      marginBottom: 0,
+      paddingLeft: 40,
     },
     titleContainer: {
       flexDirection: 'column',
       width: '60%',
+      marginTop: 20,
     },
     title: {
       fontFamily: 'PT Serif',
       fontSize: titleFontSize,
       fontWeight: 700,
-      letterSpacing: 3,
+      letterSpacing: 2,
       marginBottom: 5,
       color: primaryColor,
     },
     subtitle: {
       fontFamily: 'PT Serif',
       fontStyle: 'italic',
-      fontSize: 14,
-      letterSpacing: 4,
+      fontSize: 16,
+      letterSpacing: 6,
       color: primaryColor,
     },
     badgeContainer: {
-      width: 120,
-      height: 120,
+      width: 140,
+      height: 140,
       alignItems: 'center',
       justifyContent: 'center',
+      marginTop: -20,
+      marginRight: 20,
     },
     centerSection: {
       alignItems: 'center',
       justifyContent: 'center',
       flex: 1,
+      marginTop: 10,
     },
     presentedTo: {
-      fontSize: 10,
+      fontFamily: 'Montserrat',
+      fontSize: 12,
       fontWeight: 700,
       marginBottom: 10,
       color: primaryColor,
     },
     nameContainer: {
-      borderBottomWidth: 1,
+      borderBottomWidth: 1.5,
       borderBottomColor: primaryColor,
       paddingBottom: 5,
       marginBottom: 15,
-      width: '70%',
+      width: '60%',
       alignItems: 'center',
     },
     name: {
@@ -136,28 +142,29 @@ export const LuxuryGoldCert = ({ data, branding, features, origin = '' }: { data
     description: {
       fontFamily: 'PT Serif',
       fontStyle: 'italic',
-      fontSize: 11,
+      fontSize: 12,
       color: primaryColor,
       textAlign: 'center',
-      width: '60%',
+      width: '50%',
       lineHeight: 1.5,
     },
     bottomSection: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'flex-end',
-      height: 100,
-      paddingHorizontal: 30,
+      height: 120,
+      paddingHorizontal: 80,
+      paddingBottom: 20,
     },
     signatureBlock: {
       alignItems: 'center',
-      width: 120,
+      width: 140,
     },
     signatureImage: {
       fontFamily: 'Great Vibes',
-      fontSize: 28,
+      fontSize: 36,
       color: primaryColor,
-      marginBottom: -10,
+      marginBottom: -15,
       transform: 'rotate(-5deg)',
       zIndex: 20,
     },
@@ -165,33 +172,39 @@ export const LuxuryGoldCert = ({ data, branding, features, origin = '' }: { data
       width: '100%',
       height: 1,
       backgroundColor: primaryColor,
-      marginBottom: 5,
+      marginBottom: 8,
     },
     signatureName: {
       fontFamily: 'PT Serif',
       fontWeight: 700,
-      fontSize: 10,
+      fontSize: 12,
       color: primaryColor,
     },
     signatureTitle: {
       fontFamily: 'PT Serif',
       fontStyle: 'italic',
-      fontSize: 9,
+      fontSize: 10,
       color: primaryColor,
     }
   });
 
-  // A luxury scalloped seal badge (black and gold)
+  // A luxury scalloped seal badge
   const LuxuryBadge = () => {
-    const points = Array.from({ length: 72 }).map((_, i) => {
-      const radius = i % 2 === 0 ? 45 : 42;
+    // We create the starburst path manually because Polygon is buggy with gradients
+    let d = "";
+    for (let i = 0; i < 72; i++) {
+      const radius = i % 2 === 0 ? 48 : 44;
       const angle = (i * Math.PI) / 36;
-      return `${50 + radius * Math.cos(angle)},${50 + radius * Math.sin(angle)}`;
-    }).join(' ');
+      const x = 50 + radius * Math.cos(angle);
+      const y = 50 + radius * Math.sin(angle);
+      if (i === 0) d += `M${x},${y} `;
+      else d += `L${x},${y} `;
+    }
+    d += "Z";
 
     return (
       <View style={styles.badgeContainer}>
-        <Svg width="100" height="100">
+        <Svg width="140" height="140" viewBox="0 0 100 100">
           <Defs>
             <LinearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
               <Stop offset="0%" stopColor="#bf953f" />
@@ -201,64 +214,82 @@ export const LuxuryGoldCert = ({ data, branding, features, origin = '' }: { data
               <Stop offset="100%" stopColor="#aa771c" />
             </LinearGradient>
             <LinearGradient id="blackGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-              <Stop offset="0%" stopColor="#333333" />
+              <Stop offset="0%" stopColor="#222222" />
               <Stop offset="100%" stopColor="#000000" />
             </LinearGradient>
           </Defs>
-          <Polygon points={points} fill="url(#goldGrad)" />
-          <Circle cx="50" cy="50" r="38" fill="#000" stroke="#000" strokeWidth="1" />
-          <Circle cx="50" cy="50" r="35" fill="url(#blackGrad)" stroke="url(#goldGrad)" strokeWidth="2" />
+          <Path d={d} fill="url(#goldGrad)" />
+          <Circle cx="50" cy="50" r="41" fill="#000" stroke="#000" strokeWidth="1" />
+          <Circle cx="50" cy="50" r="38" fill="url(#blackGrad)" stroke="url(#goldGrad)" strokeWidth="1.5" />
+          {/* subtle glare */}
+          <Path d="M20,35 Q50,15 80,35 A38,38 0 0,0 20,35 Z" fill="#ffffff" opacity={0.15} />
         </Svg>
       </View>
     );
   };
 
-  // Simple elegant SVG background with curved golden lines
   const ElegantBackground = () => (
-    <View style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+    <View style={styles.backgroundWrapper}>
       <Svg width="100%" height="100%" viewBox="0 0 842 595">
         <Defs>
-          <LinearGradient id="bgGold" x1="0%" y1="0%" x2="100%" y2="100%">
-            <Stop offset="0%" stopColor="#d3a758" />
-            <Stop offset="100%" stopColor="#f8e7b9" />
+          <LinearGradient id="bgGoldLight" x1="0%" y1="0%" x2="100%" y2="100%">
+            <Stop offset="0%" stopColor="#e2c589" />
+            <Stop offset="100%" stopColor="#d3a758" />
           </LinearGradient>
-          <LinearGradient id="bgGold2" x1="100%" y1="100%" x2="0%" y2="0%">
-            <Stop offset="0%" stopColor="#d3a758" />
+          <LinearGradient id="bgGoldDark" x1="100%" y1="100%" x2="0%" y2="0%">
+            <Stop offset="0%" stopColor="#c5a059" />
             <Stop offset="100%" stopColor="#b38728" />
           </LinearGradient>
         </Defs>
         {showCornerShapes && (
           <>
-            <Path d="M0,0 L300,0 Q150,150 0,300 Z" fill="url(#bgGold)" opacity="0.6" />
-            <Path d="M0,0 L250,0 Q100,100 0,250 Z" fill="url(#bgGold2)" opacity="0.4" />
+            {/* Elegant wavy lines that stay strictly in the corners, not overlapping text */}
+            <Path d="M0,0 L200,0 C100,50 50,150 0,300 Z" fill="url(#bgGoldDark)" opacity={0.3} />
+            <Path d="M0,0 L150,0 C80,60 30,120 0,250 Z" fill="url(#bgGoldLight)" opacity={0.5} />
             
-            <Path d="M842,595 L542,595 Q692,445 842,295 Z" fill="url(#bgGold)" opacity="0.6" />
-            <Path d="M842,595 L592,595 Q742,495 842,345 Z" fill="url(#bgGold2)" opacity="0.4" />
+            <Path d="M842,595 L600,595 C700,500 750,400 842,200 Z" fill="url(#bgGoldDark)" opacity={0.3} />
+            <Path d="M842,595 L650,595 C720,520 780,450 842,250 Z" fill="url(#bgGoldLight)" opacity={0.5} />
+            
+            <Path d="M842,0 L650,0 C750,50 800,100 842,200 Z" fill="url(#bgGoldDark)" opacity={0.2} />
+            <Path d="M0,595 L200,595 C100,540 50,490 0,395 Z" fill="url(#bgGoldLight)" opacity={0.2} />
           </>
         )}
       </Svg>
     </View>
   );
   
-  // A simple SVG trophy/laurel graphic for the center bottom
   const TrophyLaurel = () => (
-    <View style={{ width: 80, height: 80, alignItems: 'center', justifyContent: 'center' }}>
-      <Svg width="60" height="60" viewBox="0 0 100 100">
+    <View style={{ width: 100, height: 100, alignItems: 'center', justifyContent: 'center' }}>
+      <Svg width="80" height="80" viewBox="0 0 100 100">
         <Defs>
           <LinearGradient id="trophyGold" x1="0%" y1="0%" x2="100%" y2="100%">
             <Stop offset="0%" stopColor="#fcf6ba" />
-            <Stop offset="50%" stopColor="#bf953f" />
+            <Stop offset="50%" stopColor="#d3a758" />
             <Stop offset="100%" stopColor="#aa771c" />
           </LinearGradient>
         </Defs>
-        {/* Simple Laurel Branches */}
-        <Path d="M20,80 Q10,50 30,20" fill="none" stroke="url(#trophyGold)" strokeWidth="3" />
-        <Path d="M80,80 Q90,50 70,20" fill="none" stroke="url(#trophyGold)" strokeWidth="3" />
-        {/* Trophy Cup */}
-        <Path d="M35,30 L65,30 L60,60 Q50,75 40,60 Z" fill="url(#trophyGold)" />
-        <Path d="M45,65 L55,65 L55,80 L40,80 L60,80" fill="none" stroke="url(#trophyGold)" strokeWidth="4" />
-        <Path d="M35,35 Q20,35 25,50 Q30,60 38,55" fill="none" stroke="url(#trophyGold)" strokeWidth="2" />
-        <Path d="M65,35 Q80,35 75,50 Q70,60 62,55" fill="none" stroke="url(#trophyGold)" strokeWidth="2" />
+        {/* Intricate Laurel Wreath Left */}
+        <Path d="M45,85 C20,80 5,50 15,25 C10,35 15,55 35,75 Z" fill="url(#trophyGold)" />
+        <Path d="M15,35 C20,30 30,30 30,35 C30,40 20,45 15,35 Z" fill="url(#trophyGold)" />
+        <Path d="M10,45 C15,40 25,40 25,45 C25,50 15,55 10,45 Z" fill="url(#trophyGold)" />
+        <Path d="M10,55 C15,50 25,50 25,55 C25,60 15,65 10,55 Z" fill="url(#trophyGold)" />
+        <Path d="M15,65 C20,60 30,60 30,65 C30,70 20,75 15,65 Z" fill="url(#trophyGold)" />
+        
+        {/* Intricate Laurel Wreath Right */}
+        <Path d="M55,85 C80,80 95,50 85,25 C90,35 85,55 65,75 Z" fill="url(#trophyGold)" />
+        <Path d="M85,35 C80,30 70,30 70,35 C70,40 80,45 85,35 Z" fill="url(#trophyGold)" />
+        <Path d="M90,45 C85,40 75,40 75,45 C75,50 85,55 90,45 Z" fill="url(#trophyGold)" />
+        <Path d="M90,55 C85,50 75,50 75,55 C75,60 85,65 90,55 Z" fill="url(#trophyGold)" />
+        <Path d="M85,65 C80,60 70,60 70,65 C70,70 80,75 85,65 Z" fill="url(#trophyGold)" />
+
+        {/* Solid Elegant Trophy Cup */}
+        <Path d="M35,25 L65,25 C65,50 55,60 50,65 C45,60 35,50 35,25 Z" fill="url(#trophyGold)" />
+        <Path d="M48,65 L52,65 L52,78 L48,78 Z" fill="url(#trophyGold)" />
+        <Path d="M40,78 L60,78 L60,82 L40,82 Z" fill="url(#trophyGold)" />
+        
+        {/* Trophy Handles */}
+        <Path d="M35,30 C20,30 20,50 38,45 C35,45 25,40 25,35 L35,35 Z" fill="url(#trophyGold)" />
+        <Path d="M65,30 C80,30 80,50 62,45 C65,45 75,40 75,35 L65,35 Z" fill="url(#trophyGold)" />
       </Svg>
     </View>
   );
@@ -301,7 +332,7 @@ export const LuxuryGoldCert = ({ data, branding, features, origin = '' }: { data
               </View>
             ) : <View style={styles.signatureBlock} />}
             
-            {showTrophy ? <TrophyLaurel /> : <View style={{ width: 80 }} />}
+            {showTrophy ? <TrophyLaurel /> : <View style={{ width: 100 }} />}
 
             {showSignatures ? (
               <View style={styles.signatureBlock}>
@@ -313,7 +344,6 @@ export const LuxuryGoldCert = ({ data, branding, features, origin = '' }: { data
             ) : <View style={styles.signatureBlock} />}
           </View>
         </View>
-
       </Page>
     </Document>
   );
