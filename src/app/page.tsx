@@ -35,6 +35,15 @@ export default function Home() {
       setSignature1("NAME");
       setSignature2("NAME");
       setDescription("In recognition of her great performance during the month of November 2023. As a tribute for her loyalty and efforts.");
+    } else if (templateId === "corporate_elegant") {
+      setPrimaryColor("#bf953f");
+      setBackgroundColor("#ffffff");
+      setTitle("CERTIFICATE");
+      setEventName("OF ACHIEVEMENT");
+      setRecipientName("Harumi Kobayashi");
+      setSignature1("Kimberly Nguyen");
+      setSignature2("Rufus Stewart");
+      setDescription("Awarded with great honor and appreciation for exceptional performance, dedication, and valuable contributions. This achievement reflects determination, passion, and a strong commitment to success. Your hard work and perseverance have made this accomplishment truly well-deserved and inspiring.");
     } else if (templateId === "geometric_horizon") {
       setPrimaryColor("#3a8ac0");
       setBackgroundColor("#0d2c44");
@@ -162,6 +171,8 @@ export default function Home() {
                   >
                     <option value="pdf">PDF Document</option>
                     <option value="image">PNG Image</option>
+                  
+                    <option value="corporate_elegant">Corporate Elegant</option>
                   </select>
                 </div>
                 
@@ -228,7 +239,7 @@ export default function Home() {
                 <label className="flex items-center gap-2 cursor-pointer group">
                   <input type="checkbox" checked={showCornerShapes} onChange={(e) => setShowCornerShapes(e.target.checked)} className="w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500" />
                   <span className="text-sm text-neutral-600 group-hover:text-neutral-900 transition-colors">
-                    {templateId === "luxury_gold" ? "Gold Waves" : "Corner Shapes"}
+                    {templateId === "luxury_gold" ? "Gold Waves" : templateId === "corporate_elegant" ? "Top Banner" : "Corner Shapes"}
                   </span>
                 </label>
                 
@@ -246,10 +257,17 @@ export default function Home() {
                   </label>
                 )}
 
+                {templateId === "corporate_elegant" && (
+                  <label className="flex items-center gap-2 cursor-pointer group">
+                    <input type="checkbox" checked={showDotGrid} onChange={(e) => setShowDotGrid(e.target.checked)} className="w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500" />
+                    <span className="text-sm text-neutral-600 group-hover:text-neutral-900 transition-colors">Company Logo</span>
+                  </label>
+                )}
+
                 <label className="flex items-center gap-2 cursor-pointer group">
                   <input type="checkbox" checked={showRibbonBadge} onChange={(e) => setShowRibbonBadge(e.target.checked)} className="w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500" />
                   <span className="text-sm text-neutral-600 group-hover:text-neutral-900 transition-colors">
-                    {templateId === "luxury_gold" ? "Golden Seal" : "Ribbon Badge"}
+                    {templateId === "luxury_gold" ? "Golden Seal" : templateId === "corporate_elegant" ? "Badge & Ribbon" : "Ribbon Badge"}
                   </span>
                 </label>
 

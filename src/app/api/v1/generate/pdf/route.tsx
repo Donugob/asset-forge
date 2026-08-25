@@ -3,6 +3,7 @@ import { generatePayloadSchema } from "@/lib/schema";
 import { renderToStream } from "@react-pdf/renderer";
 import { ModernClassicCert } from "@/templates/pdf/ModernClassicCert";
 import { LuxuryGoldCert } from "@/templates/pdf/LuxuryGoldCert";
+import { CorporateElegantCert } from "@/templates/pdf/CorporateElegantCert";
 import React from "react";
 
 export async function POST(req: Request) {
@@ -25,6 +26,8 @@ export async function POST(req: Request) {
     // eslint-disable-next-line react-hooks/error-boundaries
     if (template_id === "luxury_gold") {
       doc = <LuxuryGoldCert data={data} branding={branding} features={features} origin={origin} />;
+    } else if (template_id === "corporate_elegant") {
+      doc = <CorporateElegantCert data={data} branding={branding} features={features} origin={origin} />;
     } else {
       doc = <ModernClassicCert data={data} branding={branding} features={features} origin={origin} />;
     }
