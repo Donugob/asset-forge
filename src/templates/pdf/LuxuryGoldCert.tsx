@@ -21,13 +21,13 @@ export const LuxuryGoldCert = ({ data, branding, features, origin = '' }: { data
     });
   }
   
-  if (!Font.getRegisteredFontFamilies().includes('Playfair Display')) {
+  if (!Font.getRegisteredFontFamilies().includes('PT Serif')) {
     Font.register({
-      family: 'Playfair Display',
+      family: 'PT Serif',
       fonts: [
-        { src: `${origin}/fonts/PlayfairDisplay-Regular.ttf`, fontWeight: 400 },
-        { src: `${origin}/fonts/PlayfairDisplay-Italic.ttf`, fontWeight: 400, fontStyle: 'italic' },
-        { src: `${origin}/fonts/PlayfairDisplay-Bold.ttf`, fontWeight: 700 },
+        { src: `${origin}/fonts/PTSerif-Regular.ttf`, fontWeight: 400 },
+        { src: `${origin}/fonts/PTSerif-Italic.ttf`, fontWeight: 400, fontStyle: 'italic' },
+        { src: `${origin}/fonts/PTSerif-Bold.ttf`, fontWeight: 700 },
       ]
     });
   }
@@ -88,7 +88,7 @@ export const LuxuryGoldCert = ({ data, branding, features, origin = '' }: { data
       width: '60%',
     },
     title: {
-      fontFamily: 'Playfair Display',
+      fontFamily: 'PT Serif',
       fontSize: titleFontSize,
       fontWeight: 700,
       letterSpacing: 3,
@@ -96,7 +96,7 @@ export const LuxuryGoldCert = ({ data, branding, features, origin = '' }: { data
       color: primaryColor,
     },
     subtitle: {
-      fontFamily: 'Playfair Display',
+      fontFamily: 'PT Serif',
       fontStyle: 'italic',
       fontSize: 14,
       letterSpacing: 4,
@@ -133,7 +133,7 @@ export const LuxuryGoldCert = ({ data, branding, features, origin = '' }: { data
       color: primaryColor,
     },
     description: {
-      fontFamily: 'Playfair Display',
+      fontFamily: 'PT Serif',
       fontStyle: 'italic',
       fontSize: 11,
       color: primaryColor,
@@ -159,13 +159,13 @@ export const LuxuryGoldCert = ({ data, branding, features, origin = '' }: { data
       marginBottom: 5,
     },
     signatureName: {
-      fontFamily: 'Playfair Display',
+      fontFamily: 'PT Serif',
       fontWeight: 700,
       fontSize: 10,
       color: primaryColor,
     },
     signatureTitle: {
-      fontFamily: 'Playfair Display',
+      fontFamily: 'PT Serif',
       fontStyle: 'italic',
       fontSize: 9,
       color: primaryColor,
