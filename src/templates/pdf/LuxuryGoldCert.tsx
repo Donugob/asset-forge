@@ -229,7 +229,7 @@ export const LuxuryGoldCert = ({ data, branding, features, origin = '' }: { data
   };
 
   const ElegantBackground = () => (
-    <View style={styles.backgroundWrapper}>
+    <View style={styles.backgroundWrapper} fixed>
       <Svg width="100%" height="100%" viewBox="0 0 842 595">
         <Defs>
           <LinearGradient id="bgGoldLight" x1="0%" y1="0%" x2="100%" y2="100%">
