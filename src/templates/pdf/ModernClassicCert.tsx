@@ -4,7 +4,6 @@ import { Document, Page, Text, View, StyleSheet, Font, Svg, Circle, Path } from 
 export const ModernClassicCert = ({ data, branding, origin = '' }: { data: Record<string, string>, branding?: Record<string, string>, origin?: string }) => {
   
   // Register fonts dynamically to avoid Google Fonts changing hashed URLs
-  // Only register if they haven't been registered yet
   if (!Font.getRegisteredFontFamilies().includes('Great Vibes')) {
     Font.register({
       family: 'Great Vibes',
@@ -120,18 +119,20 @@ export const ModernClassicCert = ({ data, branding, origin = '' }: { data: Recor
 
   const DotGrid = ({ x, y }: { x: number, y: number }) => {
     return (
-      <Svg width="40" height="60" style={{ position: 'absolute', top: y, left: x, opacity: 0.5 }}>
-        {Array.from({ length: 4 }).map((_, col) => 
-          Array.from({ length: 5 }).map((_, row) => (
-            <Circle key={`${col}-${row}`} cx={col * 10 + 5} cy={row * 10 + 5} r="1.5" fill="#FFFFFF" />
-          ))
-        )}
-      </Svg>
+      <View style={{ position: 'absolute', top: y, left: x, opacity: 0.5 }} fixed>
+        <Svg width="40" height="60">
+          {Array.from({ length: 4 }).map((_, col) => 
+            Array.from({ length: 5 }).map((_, row) => (
+              <Circle key={`${col}-${row}`} cx={col * 10 + 5} cy={row * 10 + 5} r="1.5" fill="#FFFFFF" />
+            ))
+          )}
+        </Svg>
+      </View>
     );
   };
 
   const RibbonBadge = () => (
-    <View style={{ position: 'absolute', bottom: 50, left: '50%', transform: 'translateX(-40px)', width: 80, height: 100, alignItems: 'center' }}>
+    <View style={{ position: 'absolute', bottom: 50, left: '50%', transform: 'translateX(-40px)', width: 80, height: 100, alignItems: 'center' }} fixed>
       <Svg width="80" height="80" style={{ position: 'absolute', top: 30 }}>
         <Path d="M20 0 L10 70 L30 60 Z" fill="#296b99" />
         <Path d="M60 0 L70 70 L50 60 Z" fill="#296b99" />
@@ -151,7 +152,7 @@ export const ModernClassicCert = ({ data, branding, origin = '' }: { data: Recor
       <Page size="A4" orientation="landscape" style={styles.page}>
         
         {/* Background Overlay Shapes */}
-        <View style={styles.shapeTopLeft}>
+        <View style={styles.shapeTopLeft} fixed>
           <Svg width="400" height="400">
             <Path d="M0,0 L400,0 L0,400 Z" fill="#0d2c44" />
             <Path d="M0,0 L300,0 L0,300 Z" fill={primaryColor} opacity="0.9" />
@@ -159,7 +160,7 @@ export const ModernClassicCert = ({ data, branding, origin = '' }: { data: Recor
           </Svg>
         </View>
 
-        <View style={styles.shapeBottomRight}>
+        <View style={styles.shapeBottomRight} fixed>
           <Svg width="400" height="400">
             <Path d="M0,0 L400,0 L0,400 Z" fill="#0d2c44" />
             <Path d="M0,0 L300,0 L0,300 Z" fill={primaryColor} opacity="0.9" />
