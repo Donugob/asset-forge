@@ -150,6 +150,7 @@ export default function Home() {
                     className="w-full text-sm bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2 text-neutral-800 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   >
                     <option value="geometric_horizon">Geometric Horizon</option>
+                    <option value="luxury_gold">Luxury Gold</option>
                   </select>
                 </div>
               </div>

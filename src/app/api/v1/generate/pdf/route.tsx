@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { generatePayloadSchema } from "@/lib/schema";
 import { renderToStream } from "@react-pdf/renderer";
 import { ModernClassicCert } from "@/templates/pdf/ModernClassicCert";
+import { LuxuryGoldCert } from "@/templates/pdf/LuxuryGoldCert";
 import React from "react";
 
 export async function POST(req: Request) {
@@ -14,15 +15,19 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid payload", details: result.error.issues }, { status: 400 });
     }
 
-    const { branding, data } = result.data;
+    const { template_id, branding, features, data } = result.data;
     
     const host = req.headers.get("host") || "localhost:3000";
     const protocol = host.includes("localhost") ? "http" : "https";
     const origin = `${protocol}://${host}`;
 
-    // React-PDF expects a valid React element to render
+    let doc;
     // eslint-disable-next-line react-hooks/error-boundaries
-    const doc = <ModernClassicCert data={data} branding={branding} origin={origin} />;
+    if (template_id === "luxury_gold") {
+      doc = <LuxuryGoldCert data={data} branding={branding} features={features} origin={origin} />;
+    } else {
+      doc = <ModernClassicCert data={data} branding={branding} features={features} origin={origin} />;
+    }
 
     // Render directly to a Node stream
     const stream = await renderToStream(doc);
