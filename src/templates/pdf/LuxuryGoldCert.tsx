@@ -206,21 +206,25 @@ export const LuxuryGoldCert = ({ data, branding, features, origin = '' }: { data
 
   // Simple elegant SVG background with curved golden lines
   const ElegantBackground = () => (
-    <View style={styles.backgroundWrapper} fixed>
-      <Svg width="842" height="595">
+    <View style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+      <Svg width="100%" height="100%" viewBox="0 0 842 595">
         <Defs>
           <LinearGradient id="bgGold" x1="0%" y1="0%" x2="100%" y2="100%">
-            <Stop offset="0%" stopColor="#c5a059" stopOpacity="0.4" />
-            <Stop offset="50%" stopColor="#e8d8c3" stopOpacity="0" />
-            <Stop offset="100%" stopColor="#c5a059" stopOpacity="0.5" />
+            <Stop offset="0%" stopColor="#d3a758" />
+            <Stop offset="100%" stopColor="#f8e7b9" />
+          </LinearGradient>
+          <LinearGradient id="bgGold2" x1="100%" y1="100%" x2="0%" y2="0%">
+            <Stop offset="0%" stopColor="#d3a758" />
+            <Stop offset="100%" stopColor="#b38728" />
           </LinearGradient>
         </Defs>
-        <Path d="M0 0 L842 0 L842 595 L0 595 Z" fill={bgColor} />
         {showCornerShapes && (
           <>
-            <Path d="M0,0 Q200,300 0,595" fill="none" stroke="url(#bgGold)" strokeWidth="40" />
-            <Path d="M842,0 Q600,200 842,595" fill="none" stroke="url(#bgGold)" strokeWidth="60" />
-            <Path d="M0,595 Q421,400 842,595" fill="none" stroke="url(#bgGold)" strokeWidth="30" />
+            <Path d="M0,0 L300,0 Q150,150 0,300 Z" fill="url(#bgGold)" opacity="0.6" />
+            <Path d="M0,0 L250,0 Q100,100 0,250 Z" fill="url(#bgGold2)" opacity="0.4" />
+            
+            <Path d="M842,595 L542,595 Q692,445 842,295 Z" fill="url(#bgGold)" opacity="0.6" />
+            <Path d="M842,595 L592,595 Q742,495 842,345 Z" fill="url(#bgGold2)" opacity="0.4" />
           </>
         )}
       </Svg>
