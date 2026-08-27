@@ -38,8 +38,8 @@ export default function Home() {
       setSignature2("NAME");
       setDescription("In recognition of her great performance during the month of November 2023. As a tribute for her loyalty and efforts.");
     } else if (templateId === "corporate_elegant") {
-      setPrimaryColor("#bf953f");
-      setBackgroundColor("#ffffff");
+      setPrimaryColor("#d4af37");
+      setBackgroundColor("#1f2937");
       setTitle("CERTIFICATE");
       setEventName("OF ACHIEVEMENT");
       setRecipientName("Harumi Kobayashi");
