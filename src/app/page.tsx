@@ -64,6 +64,16 @@ export default function Home() {
       setRecipientName("Jane Doe");
       setAvatarUrl("https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&h=500&fit=crop");
       setLogoUrl("");
+    } else if (templateId === "vertical_pitch") {
+      setFormat("image");
+      setPrimaryColor("#3ef07a");
+      setBackgroundColor("#0a0a0a");
+      setTitle("Pitch Contestant");
+      setEventName("INNOVATION HUB VENTURE NIGHT");
+      setRecipientName("Callum Price");
+      setSignature1("@reallygreatsite");
+      setSignature2("123-456-789");
+      setAvatarUrl("https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&h=800&fit=crop");
     }
   }, [templateId]);
 
@@ -200,6 +210,7 @@ export default function Home() {
                     <option value="corporate_elegant">Corporate Elegant</option>
                     <option value="luxury_gold">Luxury Gold</option>
                     <option value="social_flyer">Social Flyer (Image)</option>
+                    <option value="vertical_pitch">Vertical Pitch (Image)</option>
                   </select>
                 </div>
               </div>
