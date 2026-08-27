@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     let height = 1080;
 
     if (template_id === "vertical_pitch") {
-      element = <VerticalPitchFlyer data={data} branding={branding} />;
+      element = <SquarePitchFlyer data={data} branding={branding} />;
       width = 1080;
       height = 1080;
     } else {
