@@ -17,6 +17,8 @@ export default function Home() {
   const [eventName, setEventName] = useState("OF ACHIEVEMENT");
   const [signature1, setSignature1] = useState("Hannah Porter");
   const [signature2, setSignature2] = useState("Callum Price");
+  const [avatarUrl, setAvatarUrl] = useState("");
+  const [logoUrl, setLogoUrl] = useState("");
 
   // Feature Toggles
   const [showCornerShapes, setShowCornerShapes] = useState(true);
@@ -53,6 +55,15 @@ export default function Home() {
       setSignature1("Hannah Porter");
       setSignature2("Callum Price");
       setDescription("The participant has demonstrated dedication, commitment, and a strong willingness to learn throughout the program.");
+    } else if (templateId === "social_flyer") {
+      setFormat("image");
+      setPrimaryColor("#3b82f6");
+      setBackgroundColor("#0a0a0a");
+      setTitle("NOMINATED FOR");
+      setEventName("BEST STARTUP 2026");
+      setRecipientName("Jane Doe");
+      setAvatarUrl("https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&h=500&fit=crop");
+      setLogoUrl("");
     }
   }, [templateId]);
 
@@ -87,6 +98,8 @@ export default function Home() {
           event_name: eventName,
           signature_1_name: signature1,
           signature_2_name: signature2,
+          avatar_url: avatarUrl,
+          logo_url: logoUrl,
         },
       };
       
@@ -125,7 +138,7 @@ export default function Home() {
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [format, templateId, primaryColor, backgroundColor, title, recipientName, description, eventName, signature1, signature2, showCornerShapes, showDotGrid, showRibbonBadge, showSignatures]);
+  }, [format, templateId, primaryColor, backgroundColor, title, recipientName, description, eventName, signature1, signature2, avatarUrl, logoUrl, showCornerShapes, showDotGrid, showRibbonBadge, showSignatures]);
 
   return (
     <main className="flex flex-col h-[100dvh] bg-neutral-50 text-neutral-900 font-sans overflow-hidden">
@@ -185,6 +198,7 @@ export default function Home() {
                   >
                     <option value="geometric_horizon">Geometric Horizon</option>
                     <option value="luxury_gold">Luxury Gold</option>
+                    <option value="social_flyer">Social Flyer (Image)</option>
                   </select>
                 </div>
               </div>
@@ -310,7 +324,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="space-y-1.5">
+                                <div className="space-y-1.5">
                   <label className="text-xs font-semibold text-neutral-600">Description</label>
                   <textarea 
                     value={description} 
@@ -319,6 +333,19 @@ export default function Home() {
                     className="w-full text-sm bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2 text-neutral-800 outline-none focus:border-emerald-500 focus:bg-white transition-all resize-none"
                   />
                 </div>
+
+                {templateId === "social_flyer" && (
+                  <div className="space-y-1.5 pt-2">
+                    <label className="text-xs font-semibold text-neutral-600">Avatar Image URL</label>
+                    <input 
+                      type="text" 
+                      value={avatarUrl} 
+                      onChange={(e) => setAvatarUrl(e.target.value)}
+                      placeholder="https://..."
+                      className="w-full text-sm bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2 text-neutral-800 outline-none focus:border-emerald-500 focus:bg-white transition-all"
+                    />
+                  </div>
+                )}
 
                 {showSignatures && (
                   <div className="grid grid-cols-2 gap-4 pt-2">

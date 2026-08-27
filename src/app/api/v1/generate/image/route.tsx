@@ -22,13 +22,19 @@ export async function POST(req: Request) {
     // eslint-disable-next-line react-hooks/error-boundaries
     const element = <SocialFlyer data={data} branding={branding} />;
 
-    // Load a font (we'd dynamically load this from Google Fonts in a real scenario)
-    // For now, we'll try to use a local or fallback font
-    // In Satori, you MUST provide at least one font.
-    // Since we don't have a local font file yet, we will fetch one from a public URL.
-    const fontData = await fetch(
-      new URL("https://github.com/vercel/satori/raw/main/playground/public/Roboto-Regular.ttf", "https://example.com")
-    ).then((res) => res.arrayBuffer());
+    const fs = require('fs');
+    const path = require('path');
+    
+    const fontPath = path.join(process.cwd(), 'public/fonts/Montserrat-Bold.ttf');
+    let fontData;
+    try {
+      fontData = fs.readFileSync(fontPath);
+    } catch (e) {
+      // Fallback if file isn't available
+      fontData = await fetch(
+        new URL("https://github.com/vercel/satori/raw/main/playground/public/Roboto-Regular.ttf", "https://example.com")
+      ).then((res) => res.arrayBuffer());
+    }
 
     // 1. Render React to SVG
     const svg = await satori(element, {
@@ -36,9 +42,9 @@ export async function POST(req: Request) {
       height: 1080,
       fonts: [
         {
-          name: "Roboto",
+          name: "Inter", // mapping to Inter for the font-family in template
           data: fontData,
-          weight: 400,
+          weight: 700,
           style: "normal",
         },
       ],
