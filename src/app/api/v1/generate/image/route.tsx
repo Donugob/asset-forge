@@ -3,7 +3,7 @@ import { generatePayloadSchema } from "@/lib/schema";
 import satori from "satori";
 import { Resvg } from "@resvg/resvg-js";
 import { SocialFlyer } from "@/templates/image/SocialFlyer";
-import { VerticalPitchFlyer } from "@/templates/image/VerticalPitchFlyer";
+import { SquarePitchFlyer } from "@/templates/image/SquarePitchFlyer";
 
 
 
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     if (template_id === "vertical_pitch") {
       element = <VerticalPitchFlyer data={data} branding={branding} />;
       width = 1080;
-      height = 1920;
+      height = 1080;
     } else {
       element = <SocialFlyer data={data} branding={branding} />;
       width = 1080;

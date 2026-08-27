@@ -210,7 +210,7 @@ export default function Home() {
                     <option value="corporate_elegant">Corporate Elegant</option>
                     <option value="luxury_gold">Luxury Gold</option>
                     <option value="social_flyer">Social Flyer (Image)</option>
-                    <option value="vertical_pitch">Vertical Pitch (Image)</option>
+                    <option value="vertical_pitch">Square Pitch (Image)</option>
                   </select>
                 </div>
               </div>
