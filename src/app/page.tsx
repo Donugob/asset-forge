@@ -189,7 +189,15 @@ export default function Home() {
                   <label className="text-xs font-semibold text-neutral-600">Format</label>
                   <select 
                     value={format} 
-                    onChange={(e) => setFormat(e.target.value)}
+                    onChange={(e) => {
+                      const newFormat = e.target.value;
+                      setFormat(newFormat);
+                      if (newFormat === "image" && templateId !== "social_flyer" && templateId !== "vertical_pitch") {
+                        setTemplateId("social_flyer");
+                      } else if (newFormat === "pdf" && (templateId === "social_flyer" || templateId === "vertical_pitch")) {
+                        setTemplateId("geometric_horizon");
+                      }
+                    }}
                     className="w-full text-sm bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2 text-neutral-800 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   >
                     <option value="pdf">PDF Document</option>
@@ -203,14 +211,28 @@ export default function Home() {
                   <label className="text-xs font-semibold text-neutral-600">Template</label>
                   <select 
                     value={templateId} 
-                    onChange={(e) => setTemplateId(e.target.value)}
+                    onChange={(e) => {
+                      setTemplateId(e.target.value);
+                      if (e.target.value === "social_flyer" || e.target.value === "vertical_pitch") {
+                        setFormat("image");
+                      } else {
+                        setFormat("pdf");
+                      }
+                    }}
                     className="w-full text-sm bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2 text-neutral-800 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   >
-                    <option value="geometric_horizon">Geometric Horizon</option>
-                    <option value="corporate_elegant">Corporate Elegant</option>
-                    <option value="luxury_gold">Luxury Gold</option>
-                    <option value="social_flyer">Social Flyer (Image)</option>
-                    <option value="vertical_pitch">Square Pitch (Image)</option>
+                    {format === "pdf" ? (
+                      <>
+                        <option value="geometric_horizon">Geometric Horizon</option>
+                        <option value="corporate_elegant">Corporate Elegant</option>
+                        <option value="luxury_gold">Luxury Gold</option>
+                      </>
+                    ) : (
+                      <>
+                        <option value="social_flyer">Social Flyer</option>
+                        <option value="vertical_pitch">Square Pitch</option>
+                      </>
+                    )}
                   </select>
                 </div>
               </div>

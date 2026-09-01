@@ -107,30 +107,49 @@ export const SquarePitchFlyer = ({
           
           {/* Text Section (Left) */}
           <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", width: "45%", zIndex: 10 }}>
-            <span
-              style={{
-                color: "#ffffff",
-                fontSize: 100,
-                fontWeight: 700,
-                letterSpacing: -3,
-                lineHeight: 1,
-                marginBottom: -10,
-              }}
-            >
-              {data.recipient_name?.split(" ")[0] || "Callum"}
-            </span>
-            <span
-              style={{
-                color: "#ffffff",
-                fontSize: 100,
-                fontWeight: 700,
-                letterSpacing: -3,
-                lineHeight: 1,
-                marginBottom: 20,
-              }}
-            >
-              {data.recipient_name?.split(" ").slice(1).join(" ") || "Price"}
-            </span>
+            {(() => {
+              const nameStr = data.recipient_name || "Callum Price";
+              const parts = nameStr.split(" ");
+              const first = parts[0];
+              const rest = parts.slice(1).join(" ");
+              
+              const getSize = (text: string) => {
+                if (!text) return 100;
+                if (text.length > 15) return 48;
+                if (text.length > 10) return 64;
+                if (text.length > 7) return 80;
+                return 100;
+              };
+
+              return (
+                <>
+                  <span
+                    style={{
+                      color: "#ffffff",
+                      fontSize: getSize(first),
+                      fontWeight: 700,
+                      letterSpacing: -3,
+                      lineHeight: 1,
+                      marginBottom: -10,
+                    }}
+                  >
+                    {first}
+                  </span>
+                  <span
+                    style={{
+                      color: "#ffffff",
+                      fontSize: getSize(rest),
+                      fontWeight: 700,
+                      letterSpacing: -3,
+                      lineHeight: 1,
+                      marginBottom: 20,
+                    }}
+                  >
+                    {rest}
+                  </span>
+                </>
+              );
+            })()}
             <span
               style={{
                 color: accentColor,

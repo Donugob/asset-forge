@@ -142,13 +142,16 @@ export const SocialFlyer = ({ data, branding }: SocialFlyerProps) => {
         {/* Name */}
         <div
           style={{
-            fontSize: "84px",
+            fontSize: recipient_name.length > 20 ? "48px" : recipient_name.length > 15 ? "64px" : "84px",
             fontWeight: 900,
             textAlign: "center",
             letterSpacing: "-2px",
             lineHeight: 1,
             marginBottom: "20px",
             display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            maxWidth: "900px",
           }}
         >
           {recipient_name}
