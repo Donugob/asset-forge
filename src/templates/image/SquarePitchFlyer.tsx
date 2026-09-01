@@ -72,7 +72,7 @@ export const SquarePitchFlyer = ({
               style={{
                 width: 80,
                 height: 80,
-                backgroundColor: accentColor,
+                backgroundColor: data.logo_url ? "transparent" : accentColor,
                 borderRadius: 20,
                 display: "flex",
                 alignItems: "center",
@@ -80,14 +80,28 @@ export const SquarePitchFlyer = ({
                 marginRight: 20,
               }}
             >
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="#000">
-                <path d="M4 4 L10 12 L4 20 Z" />
-                <path d="M20 4 L14 12 L20 20 Z" />
-              </svg>
+              {data.logo_url ? (
+                <img src={data.logo_url} style={{ width: 80, height: 80, objectFit: "contain" }} alt="Logo" />
+              ) : (
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="#000">
+                  <path d="M4 4 L10 12 L4 20 Z" />
+                  <path d="M20 4 L14 12 L20 20 Z" />
+                </svg>
+              )}
             </div>
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <span style={{ color: "#fff", fontSize: 24, fontWeight: 700, letterSpacing: -1, lineHeight: 1.1 }}>INNOVATION</span>
-              <span style={{ color: "#fff", fontSize: 24, fontWeight: 700, letterSpacing: -1, lineHeight: 1.1 }}>HUB</span>
+              {(() => {
+                const brand = data.brand_name || "INNOVATION HUB";
+                const parts = brand.split(" ");
+                const first = parts[0];
+                const rest = parts.slice(1).join(" ");
+                return (
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <div style={{ display: "flex", color: "#fff", fontSize: 24, fontWeight: 700, letterSpacing: -1, lineHeight: 1.1 }}>{first}</div>
+                    {rest && <div style={{ display: "flex", color: "#fff", fontSize: 24, fontWeight: 700, letterSpacing: -1, lineHeight: 1.1 }}>{rest}</div>}
+                  </div>
+                );
+              })()}
             </div>
           </div>
 
