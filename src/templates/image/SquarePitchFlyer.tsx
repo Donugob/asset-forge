@@ -122,9 +122,10 @@ export const SquarePitchFlyer = ({
               };
 
               return (
-                <>
-                  <span
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <div
                     style={{
+                      display: "flex",
                       color: "#ffffff",
                       fontSize: getSize(first),
                       fontWeight: 700,
@@ -134,9 +135,10 @@ export const SquarePitchFlyer = ({
                     }}
                   >
                     {first}
-                  </span>
-                  <span
+                  </div>
+                  <div
                     style={{
+                      display: "flex",
                       color: "#ffffff",
                       fontSize: getSize(rest),
                       fontWeight: 700,
@@ -146,8 +148,8 @@ export const SquarePitchFlyer = ({
                     }}
                   >
                     {rest}
-                  </span>
-                </>
+                  </div>
+                </div>
               );
             })()}
             <span
