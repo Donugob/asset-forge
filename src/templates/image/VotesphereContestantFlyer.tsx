@@ -183,18 +183,18 @@ export const VotesphereContestantFlyer = ({
           </div>
 
           {/* Avatar Section (Right) */}
-          <div style={{ display: "flex", position: "absolute", right: 0, top: 20, width: 440, height: 560 }}>
+          <div style={{ display: "flex", position: "absolute", right: 20, top: 40, width: 480, height: 480 }}>
             {/* Outline Frame Glow / Drop Shadow */}
             <div
               style={{
                 position: "absolute",
                 top: 10,
                 left: 10,
-                width: 440,
-                height: 560,
+                width: 480,
+                height: 480,
                 backgroundColor: accentColor,
                 borderRadius: 40,
-                borderTopLeftRadius: 150,
+                borderTopRightRadius: 150,
                 opacity: 0.3,
                 filter: "blur(20px)",
                 display: "flex"
@@ -205,11 +205,11 @@ export const VotesphereContestantFlyer = ({
             <img
               src={avatarUrl}
               style={{
-                width: 440,
-                height: 560,
+                width: 480,
+                height: 480,
                 objectFit: "cover",
                 borderRadius: 40,
-                borderTopLeftRadius: 150,
+                borderTopRightRadius: 150,
                 zIndex: 10,
               }}
               alt="Contestant"
@@ -220,10 +220,14 @@ export const VotesphereContestantFlyer = ({
         {/* Footer */}
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", width: "100%", marginTop: "auto" }}>
           <div style={{ width: "100%", height: "1px", backgroundColor: "rgba(255,255,255,0.1)", marginBottom: "30px", display: "flex" }} />
-          <span style={{ color: "#fff", fontSize: 24, fontWeight: 600, letterSpacing: 2, opacity: 0.9 }}>
-            Vote now at{" "}
-            <span style={{ color: accentColor }}>Votesphere.com.ng</span>
-          </span>
+          <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "8px" }}>
+            <span style={{ color: "#fff", fontSize: 24, fontWeight: 600, letterSpacing: 2, opacity: 0.9 }}>
+              Vote now at
+            </span>
+            <span style={{ color: accentColor, fontSize: 24, fontWeight: 600, letterSpacing: 2, opacity: 0.9 }}>
+              Votesphere.com.ng
+            </span>
+          </div>
         </div>
 
       </div>
