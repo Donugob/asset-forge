@@ -5,6 +5,20 @@ import crypto from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function validateApiKey(req: NextRequest) {
+  // Allow unauthenticated requests from the Playground UI
+  const referer = req.headers.get("referer") || "";
+  const origin = req.headers.get("origin") || "";
+  
+  const isPlaygroundRequest = 
+    referer.includes("localhost:3000") || 
+    origin.includes("localhost:3000") ||
+    referer.includes("assetforge.votesphere.com.ng") ||
+    origin.includes("assetforge.votesphere.com.ng");
+
+  if (isPlaygroundRequest) {
+    return null; // Bypass authentication for the public playground
+  }
+
   const authHeader = req.headers.get("Authorization");
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return NextResponse.json({ error: "Missing or invalid Authorization header" }, { status: 401 });
