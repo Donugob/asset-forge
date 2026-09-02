@@ -73,6 +73,32 @@ export default function DocsPage() {
 }`}
             </pre>
           </div>
+        <section className="mb-12">
+          <h2 className="text-xl md:text-2xl font-bold border-b border-white/10 pb-2 mb-6">AI Agents & MCP Integration</h2>
+          <p className="text-neutral-300 mb-4 text-sm md:text-base">
+            Asset Forge includes a built-in Model Context Protocol (MCP) server. You can hook your favorite AI Assistants (Claude Desktop, Cursor, etc.) directly into Asset Forge so they can autonomously generate dynamic images and PDFs.
+          </p>
+          <div className="bg-neutral-900 border border-white/10 p-6 rounded-xl">
+            <h3 className="font-semibold text-emerald-400 mb-2">Connecting Your Agent</h3>
+            <p className="text-sm text-neutral-400 mb-4">Add the following to your MCP client configuration:</p>
+            <pre className="bg-black p-4 rounded-lg border border-white/10 overflow-x-auto text-xs text-neutral-300">
+{`{
+  "mcpServers": {
+    "asset-forge": {
+      "command": "npx",
+      "args": ["tsx", "/absolute/path/to/asset-forge/mcp/index.ts"],
+      "env": {
+        "ASSET_FORGE_API_KEY": "af_YOUR_API_KEY",
+        "ASSET_FORGE_URL": "https://assetforge.votesphere.com.ng"
+      }
+    }
+  }
+}`}
+            </pre>
+            <p className="text-sm text-neutral-400 mt-4">
+              Once connected, your AI agent will have access to the <code className="text-emerald-400">generate_asset</code> tool! For full developer instructions, see <code className="text-white">docs/mcp-setup.md</code> in the repository.
+            </p>
+          </div>
         </section>
 
       </main>

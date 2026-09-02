@@ -28,19 +28,25 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
     tools: [
       {
         name: "generate_asset",
-        description: "Generate a graphic asset (image or PDF) using Asset Forge.",
+        description: "Generate a dynamic graphic asset (image or PDF) using the Asset Forge API. The resulting file is written to your local temp directory and the absolute path is returned.",
         inputSchema: {
           type: "object",
           properties: {
-            template_id: { type: "string", description: "Template ID (e.g. votesphere_contestant, social_flyer)" },
-            format: { type: "string", description: "Format (image or pdf)" },
+            template_id: { 
+              type: "string", 
+              description: "The template to use. Available options: 'votesphere_contestant' (Square PNG), 'social_flyer' (Square PNG), 'vertical_pitch' (Square PNG), 'luxury_gold' (PDF), 'corporate_elegant' (PDF), 'geometric_horizon' (PDF)." 
+            },
+            format: { 
+              type: "string", 
+              description: "Format to generate ('image' or 'pdf'). Must match the template_id's supported format." 
+            },
             data: {
               type: "object",
-              description: "Template specific data (e.g. recipient_name, avatar_url, etc.)"
+              description: "Key-value pairs of dynamic data to inject into the template. Common fields include: 'recipient_name', 'title', 'event_name', 'brand_name', 'avatar_url' (MUST be a .png or .jpg, not an SVG without dimensions), 'logo_url', 'description', 'signature_1_name', 'signature_2_name'."
             },
             branding: {
               type: "object",
-              description: "Optional branding colors: primary_color, background_color"
+              description: "Optional branding colors. E.g. { \"primary_color\": \"#2563eb\", \"background_color\": \"#050505\" }"
             }
           },
           required: ["template_id", "format", "data"],
@@ -50,11 +56,15 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
   };
 });
 
+import fs from "fs";
+import os from "os";
+import path from "path";
+
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   if (request.params.name === "generate_asset") {
     if (!ASSET_FORGE_API_KEY) {
       return {
-        content: [{ type: "text", text: "Error: ASSET_FORGE_API_KEY environment variable is not set." }],
+        content: [{ type: "text", text: "Error: ASSET_FORGE_API_KEY environment variable is not set. Please set it in your MCP configuration." }],
         isError: true,
       };
     }
@@ -74,35 +84,31 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       if (!response.ok) {
         const errorText = await response.text();
         return {
-          content: [{ type: "text", text: `Generation failed: ${response.status} ${errorText}` }],
+          content: [{ type: "text", text: `Asset Forge Generation Failed: ${response.status} ${errorText}` }],
           isError: true,
         };
       }
 
-      // Read binary data and encode as base64
       const arrayBuffer = await response.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
-      const base64 = buffer.toString('base64');
-      const mimeType = format === 'pdf' ? 'application/pdf' : 'image/png';
+      
+      const ext = format === 'pdf' ? 'pdf' : 'png';
+      const tempFilePath = path.join(os.tmpdir(), `asset-forge-${Date.now()}.${ext}`);
+      
+      fs.writeFileSync(tempFilePath, buffer);
 
       return {
         content: [
           {
             type: "text",
-            text: `Successfully generated ${format}.`
-          },
-          // MCP currently doesn't directly display raw binary in some clients, but we can return the base64 URL or a local path.
-          // For simplicity, we just return the text saying it worked, or we could write it to a temp file and return the path.
-          {
-            type: "text",
-            text: `Base64 encoded (first 100 chars): data:${mimeType};base64,${base64.substring(0, 100)}...`
+            text: `Successfully generated ${format} asset!\nThe file has been saved locally at: ${tempFilePath}`
           }
         ]
       };
 
     } catch (e: any) {
       return {
-        content: [{ type: "text", text: `Error: ${e.message}` }],
+        content: [{ type: "text", text: `Error connecting to Asset Forge: ${e.message}` }],
         isError: true,
       };
     }
