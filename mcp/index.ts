@@ -62,11 +62,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     const { template_id, format, data, branding } = request.params.arguments as any;
 
     try {
-      const response = await fetch(\`\${ASSET_FORGE_URL}/api/v1/generate/\${format}\`, {
+      const response = await fetch(`${ASSET_FORGE_URL}/api/v1/generate/${format}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": \`Bearer \${ASSET_FORGE_API_KEY}\`
+          "Authorization": `Bearer ${ASSET_FORGE_API_KEY}`
         },
         body: JSON.stringify({ template_id, format, data, branding })
       });
@@ -74,7 +74,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       if (!response.ok) {
         const errorText = await response.text();
         return {
-          content: [{ type: "text", text: \`Generation failed: \${response.status} \${errorText}\` }],
+          content: [{ type: "text", text: `Generation failed: ${response.status} ${errorText}` }],
           isError: true,
         };
       }
@@ -89,26 +89,26 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         content: [
           {
             type: "text",
-            text: \`Successfully generated \${format}.\`
+            text: `Successfully generated ${format}.`
           },
           // MCP currently doesn't directly display raw binary in some clients, but we can return the base64 URL or a local path.
           // For simplicity, we just return the text saying it worked, or we could write it to a temp file and return the path.
           {
             type: "text",
-            text: \`Base64 encoded (first 100 chars): data:\${mimeType};base64,\${base64.substring(0, 100)}...\`
+            text: `Base64 encoded (first 100 chars): data:${mimeType};base64,${base64.substring(0, 100)}...`
           }
         ]
       };
 
     } catch (e: any) {
       return {
-        content: [{ type: "text", text: \`Error: \${e.message}\` }],
+        content: [{ type: "text", text: `Error: ${e.message}` }],
         isError: true,
       };
     }
   }
 
-  throw new Error(\`Unknown tool: \${request.params.name}\`);
+  throw new Error(`Unknown tool: ${request.params.name}`);
 });
 
 async function main() {
