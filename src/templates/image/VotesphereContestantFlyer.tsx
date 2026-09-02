@@ -169,47 +169,37 @@ export const VotesphereContestantFlyer = ({
             
             {/* Category */}
             <div style={{ display: "flex" }}>
-              <div
+              <span
                 style={{
-                  display: "flex",
-                  backgroundColor: "rgba(37, 99, 235, 0.15)",
-                  border: `1px solid ${accentColor}`,
                   color: accentColor,
-                  fontSize: 28,
-                  fontWeight: 700,
-                  letterSpacing: -0.5,
-                  padding: "12px 24px",
-                  borderRadius: "30px",
+                  fontSize: 36,
+                  fontWeight: 400,
+                  letterSpacing: -1,
                 }}
               >
                 {data.title || "Icon of the Year"}
-              </div>
+              </span>
             </div>
           </div>
 
           {/* Avatar Section (Right) */}
           <div style={{ display: "flex", position: "absolute", right: 0, top: 20, width: 440, height: 560 }}>
-            {/* Outline Frame Glow */}
+            {/* Outline Frame Glow / Drop Shadow */}
             <div
               style={{
                 position: "absolute",
-                top: -10,
-                left: -10,
-                width: 460,
-                height: 580,
+                top: 10,
+                left: 10,
+                width: 440,
+                height: 560,
                 backgroundColor: accentColor,
-                borderRadius: 48,
+                borderRadius: 40,
+                borderTopLeftRadius: 150,
                 opacity: 0.3,
                 filter: "blur(20px)",
                 display: "flex"
               }}
             />
-            
-            {/* Geometric Corner Accents */}
-            <div style={{ position: "absolute", top: -2, left: -2, width: 60, height: 60, borderTop: `6px solid ${accentColor}`, borderLeft: `6px solid ${accentColor}`, borderTopLeftRadius: 40, zIndex: 20, display: "flex" }} />
-            <div style={{ position: "absolute", bottom: -2, right: -2, width: 60, height: 60, borderBottom: `6px solid ${accentColor}`, borderRight: `6px solid ${accentColor}`, borderBottomRightRadius: 40, zIndex: 20, display: "flex" }} />
-            <div style={{ position: "absolute", top: -2, right: -2, width: 30, height: 30, borderTop: `6px solid ${accentColor}`, borderRight: `6px solid ${accentColor}`, borderTopRightRadius: 40, zIndex: 20, display: "flex" }} />
-            <div style={{ position: "absolute", bottom: -2, left: -2, width: 30, height: 30, borderBottom: `6px solid ${accentColor}`, borderLeft: `6px solid ${accentColor}`, borderBottomLeftRadius: 40, zIndex: 20, display: "flex" }} />
             
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -219,7 +209,7 @@ export const VotesphereContestantFlyer = ({
                 height: 560,
                 objectFit: "cover",
                 borderRadius: 40,
-                border: "4px solid rgba(255,255,255,0.05)",
+                borderTopLeftRadius: 150,
                 zIndex: 10,
               }}
               alt="Contestant"
@@ -231,7 +221,8 @@ export const VotesphereContestantFlyer = ({
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", width: "100%", marginTop: "auto" }}>
           <div style={{ width: "100%", height: "1px", backgroundColor: "rgba(255,255,255,0.1)", marginBottom: "30px", display: "flex" }} />
           <span style={{ color: "#fff", fontSize: 24, fontWeight: 600, letterSpacing: 2, opacity: 0.9 }}>
-            Vote now at <span style={{ color: accentColor }}>Votesphere.com.ng</span>
+            Vote now at{" "}
+            <span style={{ color: accentColor }}>Votesphere.com.ng</span>
           </span>
         </div>
 
