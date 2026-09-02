@@ -24,14 +24,14 @@ export default function LoginPage() {
         password,
         name,
       });
-      if (error) setError(error.message);
+      if (error) setError(error.message || "An error occurred");
       else router.push("/dashboard");
     } else {
       const { data, error } = await authClient.signIn.email({
         email,
         password,
       });
-      if (error) setError(error.message);
+      if (error) setError(error.message || "An error occurred");
       else router.push("/dashboard");
     }
   };

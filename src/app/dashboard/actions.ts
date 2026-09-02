@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import crypto from "crypto";
 
 export async function createApiKey(name: string) {
-  const session = await auth.api.getSession({ headers: headers() });
+  const session = await auth.api.getSession({ headers: await headers() });
   if (!session?.user) {
     throw new Error("Unauthorized");
   }
@@ -28,7 +28,7 @@ export async function createApiKey(name: string) {
 }
 
 export async function getApiKeys() {
-  const session = await auth.api.getSession({ headers: headers() });
+  const session = await auth.api.getSession({ headers: await headers() });
   if (!session?.user) {
     throw new Error("Unauthorized");
   }
@@ -44,7 +44,7 @@ export async function getApiKeys() {
 }
 
 export async function revokeApiKey(id: string) {
-  const session = await auth.api.getSession({ headers: headers() });
+  const session = await auth.api.getSession({ headers: await headers() });
   if (!session?.user) {
     throw new Error("Unauthorized");
   }
