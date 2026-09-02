@@ -7,7 +7,35 @@ import { SquarePitchFlyer } from "@/templates/image/SquarePitchFlyer";
 import { VotesphereContestantFlyer } from "@/templates/image/VotesphereContestantFlyer";
 import { validateApiKey } from "@/lib/api-auth";
 
+import fs from 'fs';
+import path from 'path';
 
+// Module-level cache to ensure fonts are loaded into memory exactly ONCE per serverless lambda instance.
+// This completely eliminates disk I/O and network requests on subsequent generations, reducing latency to ~0ms.
+let cachedFontBold: Buffer | ArrayBuffer | null = null;
+let cachedFontRegular: Buffer | ArrayBuffer | null = null;
+
+async function loadFonts() {
+  if (cachedFontBold && cachedFontRegular) {
+    return { fontDataBold: cachedFontBold, fontDataRegular: cachedFontRegular };
+  }
+
+  const fontPathBold = path.join(process.cwd(), 'public/fonts/Montserrat-Bold.ttf');
+  const fontPathRegular = path.join(process.cwd(), 'public/fonts/Montserrat-Regular.ttf');
+  
+  try {
+    cachedFontBold = fs.readFileSync(fontPathBold);
+    cachedFontRegular = fs.readFileSync(fontPathRegular);
+  } catch (e) {
+    console.warn("Local fonts not found, falling back to GitHub fetch (this will be slow!).");
+    cachedFontBold = await fetch(
+      new URL("https://github.com/vercel/satori/raw/main/playground/public/Roboto-Regular.ttf", "https://example.com")
+    ).then((res) => res.arrayBuffer());
+    cachedFontRegular = cachedFontBold;
+  }
+
+  return { fontDataBold: cachedFontBold, fontDataRegular: cachedFontRegular };
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -42,21 +70,8 @@ export async function POST(req: NextRequest) {
       height = 1080;
     }
 
-    const fs = require('fs');
-    const path = require('path');
-    
-        const fontPathBold = path.join(process.cwd(), 'public/fonts/Montserrat-Bold.ttf');
-    const fontPathRegular = path.join(process.cwd(), 'public/fonts/Montserrat-Regular.ttf');
-    let fontDataBold, fontDataRegular;
-    try {
-      fontDataBold = fs.readFileSync(fontPathBold);
-      fontDataRegular = fs.readFileSync(fontPathRegular);
-    } catch (e) {
-      fontDataBold = await fetch(
-        new URL("https://github.com/vercel/satori/raw/main/playground/public/Roboto-Regular.ttf", "https://example.com")
-      ).then((res) => res.arrayBuffer());
-      fontDataRegular = fontDataBold;
-    }
+    // Load fonts (sub-millisecond if cached)
+    const { fontDataBold, fontDataRegular } = await loadFonts();
 
     // 1. Render React to SVG
     const svg = await satori(element, {
