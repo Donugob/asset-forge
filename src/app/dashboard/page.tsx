@@ -55,7 +55,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white">
-      <nav className="flex items-center justify-between px-8 py-6 border-b border-white/10 bg-black/50">
+      <nav className="flex flex-col md:flex-row items-center justify-between px-4 md:px-8 py-4 md:py-6 border-b border-white/10 bg-black/50 gap-4 md:gap-0">
         <Link href="/" className="flex items-center gap-2">
           <Layers className="w-6 h-6 text-emerald-500" />
           <span className="font-bold text-lg tracking-tight">Asset Forge</span>
@@ -69,21 +69,21 @@ export default function DashboardPage() {
         </div>
       </nav>
 
-      <main className="max-w-4xl mx-auto px-8 py-12">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold">API Keys</h1>
-          <div className="flex gap-2">
+      <main className="max-w-4xl mx-auto px-4 md:px-8 py-8 md:py-12">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
+          <h1 className="text-2xl md:text-3xl font-bold">API Keys</h1>
+          <div className="flex gap-2 w-full sm:w-auto">
             <input
               type="text"
-              placeholder="Key Name (e.g. Prod)"
+              placeholder="Key Name"
               value={keyName}
               onChange={(e) => setKeyName(e.target.value)}
-              className="bg-neutral-900 border border-white/10 rounded-lg px-3 py-2 text-sm outline-none focus:border-emerald-500 transition-colors"
+              className="w-full sm:w-auto bg-neutral-900 border border-white/10 rounded-lg px-3 py-2 text-sm outline-none focus:border-emerald-500 transition-colors"
             />
             <button
               onClick={handleCreate}
               disabled={!keyName}
-              className="flex items-center gap-2 bg-emerald-500 text-black px-4 py-2 rounded-lg text-sm font-semibold hover:bg-emerald-400 disabled:opacity-50 transition-colors"
+              className="flex items-center gap-2 bg-emerald-500 text-black px-4 py-2 rounded-lg text-sm font-semibold hover:bg-emerald-400 disabled:opacity-50 transition-colors shrink-0"
             >
               <Plus className="w-4 h-4" />
               Generate
@@ -92,14 +92,14 @@ export default function DashboardPage() {
         </div>
 
         {newKey && (
-          <div className="bg-emerald-500/10 border border-emerald-500/30 p-6 rounded-xl mb-8">
+          <div className="bg-emerald-500/10 border border-emerald-500/30 p-4 md:p-6 rounded-xl mb-8 break-all">
             <h3 className="text-emerald-400 font-bold mb-2">Save your new API Key</h3>
             <p className="text-sm text-neutral-300 mb-4">You won't be able to see this key again. Please copy it now.</p>
-            <div className="flex items-center gap-4">
-              <code className="bg-black px-4 py-3 rounded-lg text-emerald-400 flex-1">{newKey}</code>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <code className="bg-black px-4 py-3 rounded-lg text-emerald-400 flex-1 w-full">{newKey}</code>
               <button
                 onClick={() => navigator.clipboard.writeText(newKey)}
-                className="bg-neutral-800 p-3 rounded-lg hover:bg-neutral-700 transition-colors"
+                className="bg-neutral-800 p-3 rounded-lg hover:bg-neutral-700 transition-colors w-full sm:w-auto flex justify-center"
               >
                 <Copy className="w-5 h-5 text-neutral-300" />
               </button>
@@ -107,7 +107,7 @@ export default function DashboardPage() {
           </div>
         )}
 
-        <div className="bg-neutral-900 border border-white/10 rounded-xl overflow-hidden">
+        <div className="bg-neutral-900 border border-white/10 rounded-xl overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead className="bg-neutral-950 border-b border-white/10 text-neutral-400">
               <tr>

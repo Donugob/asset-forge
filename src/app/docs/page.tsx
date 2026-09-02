@@ -4,30 +4,30 @@ import { Layers } from "lucide-react";
 export default function DocsPage() {
   return (
     <div className="min-h-screen bg-[#050505] text-white">
-      <nav className="flex items-center justify-between px-8 py-6 border-b border-white/10">
+      <nav className="flex items-center justify-between px-4 md:px-8 py-4 md:py-6 border-b border-white/10">
         <Link href="/" className="flex items-center gap-2">
           <Layers className="w-6 h-6 text-emerald-500" />
           <span className="font-bold text-lg tracking-tight">Asset Forge</span>
         </Link>
       </nav>
 
-      <main className="max-w-4xl mx-auto px-8 py-16">
-        <h1 className="text-4xl font-black mb-4">API Documentation</h1>
-        <p className="text-neutral-400 text-lg mb-12">Generate flyers and certificates dynamically using our fast API.</p>
+      <main className="max-w-4xl mx-auto px-4 md:px-8 py-8 md:py-16">
+        <h1 className="text-3xl md:text-4xl font-black mb-4">API Documentation</h1>
+        <p className="text-neutral-400 text-base md:text-lg mb-8 md:mb-12">Generate flyers and certificates dynamically using our fast API.</p>
 
         <section className="mb-12">
-          <h2 className="text-2xl font-bold border-b border-white/10 pb-2 mb-6">Authentication</h2>
-          <p className="text-neutral-300 mb-4">All API requests must be authenticated via a Bearer token. You can generate an API key from your dashboard.</p>
-          <div className="bg-white/5 p-4 rounded-lg font-mono text-sm border border-white/10 text-emerald-400">
+          <h2 className="text-xl md:text-2xl font-bold border-b border-white/10 pb-2 mb-6">Authentication</h2>
+          <p className="text-neutral-300 mb-4 text-sm md:text-base">All API requests must be authenticated via a Bearer token. You can generate an API key from your dashboard.</p>
+          <div className="bg-white/5 p-4 rounded-lg font-mono text-xs md:text-sm border border-white/10 text-emerald-400 overflow-x-auto break-all md:break-normal">
             Authorization: Bearer af_1234567890abcdef
           </div>
         </section>
 
         <section className="mb-12">
-          <h2 className="text-2xl font-bold border-b border-white/10 pb-2 mb-6">Endpoints</h2>
+          <h2 className="text-xl md:text-2xl font-bold border-b border-white/10 pb-2 mb-6">Endpoints</h2>
           
           <div className="mb-8">
-            <h3 className="text-xl font-semibold mb-2 flex items-center gap-3">
+            <h3 className="text-lg md:text-xl font-semibold mb-2 flex items-center gap-3 flex-wrap">
               <span className="bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded text-sm">POST</span>
               /api/v1/generate/image
             </h3>
