@@ -85,7 +85,7 @@ export default function Home() {
       setEventName("LAWSAN SE MERIT AWARDS");
       setBrandName("Votesphere");
       setRecipientName("Amina Bello");
-      setAvatarUrl("https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&h=800&fit=crop");
+      setAvatarUrl("https://placehold.co/800x800/2563eb/white.png?text=JD");
       setLogoUrl("https://www.votesphere.com.ng/logo.png");
     }
   }, [templateId]);

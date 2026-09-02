@@ -46,8 +46,8 @@ export default function DocsPage() {
     "recipient_name": "Amina Bello",
     "title": "Icon of the Year",
     "event_name": "LAWSAN SE MERIT AWARDS",
-    "avatar_url": "https://example.com/avatar.jpg",
-    "logo_url": "https://example.com/logo.png",
+    "avatar_url": "https://placehold.co/600x600/111111/white.png?text=JD",
+    "logo_url": "https://placehold.co/100x100/2563eb/white.png?text=Logo",
     "brand_name": "Votesphere"
   }
 }`}
