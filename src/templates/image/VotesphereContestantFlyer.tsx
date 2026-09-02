@@ -26,17 +26,53 @@ export const VotesphereContestantFlyer = ({
         overflow: "hidden",
       }}
     >
-      {/* Background Subtle Glows */}
+      {/* Background Shapes */}
+      <svg
+        style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 0 }}
+        viewBox="0 0 1080 1080"
+        fill="none"
+      >
+        {/* Large sweeping curves */}
+        <path
+          d="M1080 0 C 1080 500, 500 1080, 0 1080 L 0 0 Z"
+          fill="rgba(255, 255, 255, 0.03)"
+        />
+        <path
+          d="M0 200 C 600 200, 1080 600, 1080 1080 L 0 1080 Z"
+          fill="rgba(255, 255, 255, 0.02)"
+        />
+        {/* Colored overlay shapes */}
+        <path
+          d="M1080 500 C 800 500, 500 800, 500 1080 L 1080 1080 Z"
+          fill={accentColor}
+          opacity="0.08"
+        />
+        
+        {/* Tech Grid dots in corner */}
+        <g opacity="0.2" fill={accentColor}>
+          <circle cx="950" cy="150" r="3" />
+          <circle cx="980" cy="150" r="3" />
+          <circle cx="1010" cy="150" r="3" />
+          <circle cx="950" cy="180" r="3" />
+          <circle cx="980" cy="180" r="3" />
+          <circle cx="1010" cy="180" r="3" />
+          <circle cx="950" cy="210" r="3" />
+          <circle cx="980" cy="210" r="3" />
+          <circle cx="1010" cy="210" r="3" />
+        </g>
+      </svg>
+
+      {/* Subtle Glows */}
       <div
         style={{
           position: "absolute",
-          top: "-200px",
-          left: "-200px",
+          top: "-150px",
+          left: "-150px",
           width: "600px",
           height: "600px",
           backgroundColor: accentColor,
           borderRadius: "50%",
-          opacity: 0.1,
+          opacity: 0.15,
           filter: "blur(120px)",
           display: "flex",
         }}
@@ -44,14 +80,14 @@ export const VotesphereContestantFlyer = ({
       <div
         style={{
           position: "absolute",
-          bottom: "-100px",
-          right: "-100px",
+          bottom: "-50px",
+          right: "-50px",
           width: "800px",
           height: "800px",
           backgroundColor: accentColor,
           borderRadius: "50%",
-          opacity: 0.05,
-          filter: "blur(100px)",
+          opacity: 0.1,
+          filter: "blur(120px)",
           display: "flex",
         }}
       />
@@ -168,6 +204,13 @@ export const VotesphereContestantFlyer = ({
                 display: "flex"
               }}
             />
+            
+            {/* Geometric Corner Accents */}
+            <div style={{ position: "absolute", top: -2, left: -2, width: 60, height: 60, borderTop: `6px solid ${accentColor}`, borderLeft: `6px solid ${accentColor}`, borderTopLeftRadius: 40, zIndex: 20, display: "flex" }} />
+            <div style={{ position: "absolute", bottom: -2, right: -2, width: 60, height: 60, borderBottom: `6px solid ${accentColor}`, borderRight: `6px solid ${accentColor}`, borderBottomRightRadius: 40, zIndex: 20, display: "flex" }} />
+            <div style={{ position: "absolute", top: -2, right: -2, width: 30, height: 30, borderTop: `6px solid ${accentColor}`, borderRight: `6px solid ${accentColor}`, borderTopRightRadius: 40, zIndex: 20, display: "flex" }} />
+            <div style={{ position: "absolute", bottom: -2, left: -2, width: 30, height: 30, borderBottom: `6px solid ${accentColor}`, borderLeft: `6px solid ${accentColor}`, borderBottomLeftRadius: 40, zIndex: 20, display: "flex" }} />
+            
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={avatarUrl}
@@ -176,7 +219,8 @@ export const VotesphereContestantFlyer = ({
                 height: 560,
                 objectFit: "cover",
                 borderRadius: 40,
-                border: "4px solid rgba(255,255,255,0.1)",
+                border: "4px solid rgba(255,255,255,0.05)",
+                zIndex: 10,
               }}
               alt="Contestant"
             />
@@ -184,7 +228,8 @@ export const VotesphereContestantFlyer = ({
         </div>
 
         {/* Footer */}
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", marginTop: "auto" }}>
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", width: "100%", marginTop: "auto" }}>
+          <div style={{ width: "100%", height: "1px", backgroundColor: "rgba(255,255,255,0.1)", marginBottom: "30px", display: "flex" }} />
           <span style={{ color: "#fff", fontSize: 24, fontWeight: 600, letterSpacing: 2, opacity: 0.9 }}>
             Vote now at <span style={{ color: accentColor }}>Votesphere.com.ng</span>
           </span>
