@@ -76,7 +76,16 @@ export default function Home() {
       setSignature1("@reallygreatsite");
       setSignature2("123-456-789");
       setAvatarUrl("https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&h=800&fit=crop");
-      setLogoUrl("");
+    } else if (templateId === "votesphere_contestant") {
+      setFormat("image");
+      setPrimaryColor("#2563eb");
+      setBackgroundColor("#050505");
+      setTitle("Icon of the Year");
+      setEventName("LAWSAN SE MERIT AWARDS");
+      setBrandName("Votesphere");
+      setRecipientName("Amina Bello");
+      setAvatarUrl("https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&h=800&fit=crop");
+      setLogoUrl("https://www.votesphere.com.ng/logo.png");
     }
   }, [templateId]);
 
@@ -225,18 +234,20 @@ export default function Home() {
                     }}
                     className="w-full text-sm bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2 text-neutral-800 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   >
-                    {format === "pdf" ? (
-                      <>
-                        <option value="geometric_horizon">Geometric Horizon</option>
-                        <option value="corporate_elegant">Corporate Elegant</option>
-                        <option value="luxury_gold">Luxury Gold</option>
-                      </>
-                    ) : (
-                      <>
-                        <option value="social_flyer">Social Flyer</option>
-                        <option value="vertical_pitch">Square Pitch</option>
-                      </>
-                    )}
+                      {format === "pdf" && (
+                        <>
+                          <option value="luxury_gold">Luxury Gold Certificate</option>
+                          <option value="geometric_horizon">Geometric Horizon</option>
+                          <option value="corporate_elegant">Corporate Elegant</option>
+                        </>
+                      )}
+                      {format === "image" && (
+                        <>
+                          <option value="social_flyer">Social Media Flyer (Landscape)</option>
+                          <option value="vertical_pitch">Square Pitch Flyer (Square)</option>
+                          <option value="votesphere_contestant">Votesphere Contestant (Square)</option>
+                        </>
+                      )}
                   </select>
                 </div>
               </div>
@@ -372,9 +383,9 @@ export default function Home() {
                   />
                 </div>
 
-                {(templateId === "social_flyer" || templateId === "vertical_pitch") && (
+                {(templateId === "social_flyer" || templateId === "vertical_pitch" || templateId === "votesphere_contestant") && (
                   <>
-                    {templateId === "vertical_pitch" && (
+                    {(templateId === "vertical_pitch" || templateId === "votesphere_contestant") && (
                       <div className="space-y-1.5 pt-2">
                         <label className="text-xs font-semibold text-neutral-600">Brand Name</label>
                         <input 

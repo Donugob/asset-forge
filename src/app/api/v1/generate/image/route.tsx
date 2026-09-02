@@ -4,6 +4,7 @@ import satori from "satori";
 import { Resvg } from "@resvg/resvg-js";
 import { SocialFlyer } from "@/templates/image/SocialFlyer";
 import { SquarePitchFlyer } from "@/templates/image/SquarePitchFlyer";
+import { VotesphereContestantFlyer } from "@/templates/image/VotesphereContestantFlyer";
 
 
 
@@ -25,6 +26,10 @@ export async function POST(req: Request) {
 
     if (template_id === "vertical_pitch") {
       element = <SquarePitchFlyer data={data} branding={branding} />;
+      width = 1080;
+      height = 1080;
+    } else if (template_id === "votesphere_contestant") {
+      element = <VotesphereContestantFlyer data={data} branding={branding} />;
       width = 1080;
       height = 1080;
     } else {
