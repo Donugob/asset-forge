@@ -1,13 +1,17 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { generatePayloadSchema } from "@/lib/schema";
 import { renderToStream } from "@react-pdf/renderer";
 import { ModernClassicCert } from "@/templates/pdf/ModernClassicCert";
 import { LuxuryGoldCert } from "@/templates/pdf/LuxuryGoldCert";
 import { CorporateElegantCert } from "@/templates/pdf/CorporateElegantCert";
+import { validateApiKey } from "@/lib/api-auth";
 import React from "react";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
+    const authError = await validateApiKey(req);
+    if (authError) return authError;
+
     const json = await req.json();
     
     // Strict Payload Validation
