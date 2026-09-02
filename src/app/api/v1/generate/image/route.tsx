@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import { NextResponse, NextRequest } from "next/server";
 import { generatePayloadSchema } from "@/lib/schema";
 import satori from "satori";
