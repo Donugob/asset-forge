@@ -73,6 +73,8 @@ export default function DocsPage() {
 }`}
             </pre>
           </div>
+        </section>
+
         <section className="mb-12">
           <h2 className="text-xl md:text-2xl font-bold border-b border-white/10 pb-2 mb-6">AI Agents & MCP Integration</h2>
           <p className="text-neutral-300 mb-4 text-sm md:text-base">
