@@ -14,7 +14,7 @@ export const SquarePitchFlyer = ({
   const nameLines = formatContestantName(data.recipient_name || "Callum Price");
   const longestLine = Math.max(...nameLines.map(l => l.length));
   const maxWidth = 480; 
-  const avgCharWidthRatio = 0.55; // Slightly different for this specific design
+  const avgCharWidthRatio = 0.80; // Conservative estimation for bold Inter
   const calculatedSize = maxWidth / (Math.max(1, longestLine) * avgCharWidthRatio);
   const fontSize = Math.min(100, Math.floor(calculatedSize));
 
@@ -128,7 +128,7 @@ export const SquarePitchFlyer = ({
           
           {/* Text Section (Left) */}
           <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", width: "45%", zIndex: 10 }}>
-            <div style={{ display: "flex", flexDirection: "column", width: "100%", wordBreak: "break-word", marginBottom: 20 }}>
+            <div style={{ display: "flex", flexDirection: "column", width: "100%", marginBottom: 20 }}>
               {nameLines.map((line, idx) => (
                 <div
                   key={idx}
@@ -139,6 +139,7 @@ export const SquarePitchFlyer = ({
                     fontWeight: 700,
                     letterSpacing: -2,
                     lineHeight: 1,
+                    whiteSpace: "nowrap",
                     marginBottom: idx === nameLines.length - 1 ? 0 : (nameLines.length > 1 ? 5 : 20),
                   }}
                 >

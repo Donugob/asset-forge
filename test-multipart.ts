@@ -1,6 +1,7 @@
-import { Buffer } from 'node:buffer';
+import { config } from 'dotenv';
+config({ path: '.env.local' });
 
-export async function uploadToImageKit(
+async function uploadToImageKit(
   buffer: ArrayBuffer,
   fileName: string,
   folder: string = '/asset-forge'
@@ -8,7 +9,16 @@ export async function uploadToImageKit(
   const privateKey = process.env.IMAGEKIT_PRIVATE_KEY;
   if (!privateKey) throw new Error('IMAGEKIT_PRIVATE_KEY is missing');
 
-  const base64String = Buffer.from(buffer).toString('base64');
+  function arrayBufferToBase64(buf: ArrayBuffer) {
+    let binary = '';
+    const bytes = new Uint8Array(buf);
+    for (let i = 0; i < bytes.byteLength; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return btoa(binary);
+  }
+
+  const base64String = arrayBufferToBase64(buffer);
   const dataUri = `data:image/png;base64,${base64String}`;
 
   const boundary = '----WebKitFormBoundary7MA4YWxkTrZu0gW';
@@ -46,3 +56,16 @@ export async function uploadToImageKit(
   const data = await response.json();
   return data.url;
 }
+
+async function test() {
+  const dummyString = "Hello world fake image";
+  const encoder = new TextEncoder();
+  const arrayBuffer = encoder.encode(dummyString).buffer;
+  try {
+    const url = await uploadToImageKit(arrayBuffer, 'test_manual.png');
+    console.log("Success URL:", url);
+  } catch(e) {
+    console.error("Failed:", e);
+  }
+}
+test();

@@ -24,7 +24,7 @@ export const SocialFlyer = ({ data, branding }: SocialFlyerProps) => {
   const nameLines = formatContestantName(recipient_name);
   const longestLine = Math.max(...nameLines.map(l => l.length));
   const maxWidth = 900; 
-  const avgCharWidthRatio = 0.55; 
+  const avgCharWidthRatio = 0.85; 
   const calculatedSize = maxWidth / (Math.max(1, longestLine) * avgCharWidthRatio);
   const fontSize = Math.min(96, Math.floor(calculatedSize));
 
@@ -158,6 +158,7 @@ export const SocialFlyer = ({ data, branding }: SocialFlyerProps) => {
                 textAlign: "center",
                 letterSpacing: "-2px",
                 lineHeight: 1,
+                whiteSpace: "nowrap",
                 marginBottom: idx === nameLines.length - 1 ? 0 : 5,
               }}
             >

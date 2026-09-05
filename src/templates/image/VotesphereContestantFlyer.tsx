@@ -18,7 +18,7 @@ export const VotesphereContestantFlyer = ({
   
   // Responsive cohesive font sizing based on the widest line
   const maxWidth = 480; 
-  const avgCharWidthRatio = 0.60; // Tighter estimation for bold Inter
+  const avgCharWidthRatio = 0.85; // Much more conservative estimation for bold Inter to guarantee fit
   const calculatedSize = maxWidth / (Math.max(1, longestLine) * avgCharWidthRatio);
   const fontSize = Math.min(105, Math.floor(calculatedSize));
 
@@ -86,7 +86,7 @@ export const VotesphereContestantFlyer = ({
         <div style={{ display: "flex", flex: 1, marginTop: "80px", position: "relative" }}>
           
           <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", width: "50%", zIndex: 10 }}>
-            <div style={{ display: "flex", flexDirection: "column", width: "100%", wordBreak: "break-word", marginBottom: 24 }}>
+            <div style={{ display: "flex", flexDirection: "column", width: "100%", marginBottom: 24 }}>
               {nameLines.map((line, idx) => (
                 <div
                   key={idx}
@@ -97,6 +97,7 @@ export const VotesphereContestantFlyer = ({
                     fontWeight: 900,
                     letterSpacing: -2,
                     lineHeight: 1,
+                    whiteSpace: "nowrap", // Strictly forbid text from breaking
                     marginBottom: idx === nameLines.length - 1 ? 0 : (nameLines.length > 1 ? 5 : 20),
                   }}
                 >
