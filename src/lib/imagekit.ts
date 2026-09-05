@@ -1,3 +1,5 @@
+import { Buffer } from 'node:buffer';
+
 export async function uploadToImageKit(
   buffer: ArrayBuffer,
   fileName: string,
@@ -6,13 +8,13 @@ export async function uploadToImageKit(
   const privateKey = process.env.IMAGEKIT_PRIVATE_KEY;
   if (!privateKey) throw new Error('IMAGEKIT_PRIVATE_KEY is missing');
 
+  // 1. Hardware-accelerated base64 encoding (< 1ms, avoids CPU timeout)
+  const base64String = Buffer.from(buffer).toString('base64');
+  const dataUri = `data:image/png;base64,${base64String}`;
+
+  // 2. Standard FormData using PURE STRINGS (bypasses Vercel's binary Blob dropping bug)
   const formData = new FormData();
-  
-  // Directly append the binary buffer as a Blob.
-  // The 3rd argument (fileName) is CRITICAL: it forces the Edge runtime to properly 
-  // format the Content-Disposition header so ImageKit recognizes it as a file.
-  formData.append('file', new Blob([buffer], { type: 'image/png' }), fileName);
-  
+  formData.append('file', dataUri);
   formData.append('fileName', fileName);
   formData.append('folder', folder);
   formData.append('useUniqueFileName', 'true');
