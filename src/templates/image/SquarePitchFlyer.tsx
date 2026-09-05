@@ -1,4 +1,4 @@
-import React from 'react';
+import { formatContestantName } from '@/lib/typography';
 
 export const SquarePitchFlyer = ({
   data,
@@ -10,6 +10,13 @@ export const SquarePitchFlyer = ({
   const accentColor = branding?.primary_color || "#3ef07a";
   const bgColor = branding?.background_color || "#0a0a0a";
   const avatarUrl = data.avatar_url || "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&h=800&fit=crop";
+
+  const nameLines = formatContestantName(data.recipient_name || "Callum Price");
+  const longestLine = Math.max(...nameLines.map(l => l.length));
+  const maxWidth = 480; 
+  const avgCharWidthRatio = 0.55; // Slightly different for this specific design
+  const calculatedSize = maxWidth / (Math.max(1, longestLine) * avgCharWidthRatio);
+  const fontSize = Math.min(100, Math.floor(calculatedSize));
 
   return (
     <div
@@ -121,51 +128,24 @@ export const SquarePitchFlyer = ({
           
           {/* Text Section (Left) */}
           <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", width: "45%", zIndex: 10 }}>
-            {(() => {
-              const nameStr = data.recipient_name || "Callum Price";
-              const parts = nameStr.split(" ");
-              const first = parts[0];
-              const rest = parts.slice(1).join(" ");
-              
-              const getSize = (text: string) => {
-                if (!text) return 100;
-                if (text.length > 15) return 48;
-                if (text.length > 10) return 64;
-                if (text.length > 7) return 80;
-                return 100;
-              };
-
-              return (
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      color: "#ffffff",
-                      fontSize: getSize(first),
-                      fontWeight: 700,
-                      letterSpacing: -3,
-                      lineHeight: 1,
-                      marginBottom: -10,
-                    }}
-                  >
-                    {first}
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      color: "#ffffff",
-                      fontSize: getSize(rest),
-                      fontWeight: 700,
-                      letterSpacing: -3,
-                      lineHeight: 1,
-                      marginBottom: 20,
-                    }}
-                  >
-                    {rest}
-                  </div>
+            <div style={{ display: "flex", flexDirection: "column", width: "100%", wordBreak: "break-word", marginBottom: 20 }}>
+              {nameLines.map((line, idx) => (
+                <div
+                  key={idx}
+                  style={{
+                    display: "flex",
+                    color: "#ffffff",
+                    fontSize: fontSize,
+                    fontWeight: 700,
+                    letterSpacing: -2,
+                    lineHeight: 1,
+                    marginBottom: idx === nameLines.length - 1 ? 0 : (nameLines.length > 1 ? 5 : 20),
+                  }}
+                >
+                  {line}
                 </div>
-              );
-            })()}
+              ))}
+            </div>
             <span
               style={{
                 color: accentColor,

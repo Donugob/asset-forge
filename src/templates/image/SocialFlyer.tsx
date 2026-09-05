@@ -1,4 +1,4 @@
-import React from 'react';
+import { formatContestantName } from '@/lib/typography';
 
 interface SocialFlyerProps {
   data: Record<string, string>;
@@ -20,6 +20,13 @@ export const SocialFlyer = ({ data, branding }: SocialFlyerProps) => {
     logo_url = "",
     avatar_url = "",
   } = data;
+
+  const nameLines = formatContestantName(recipient_name);
+  const longestLine = Math.max(...nameLines.map(l => l.length));
+  const maxWidth = 900; 
+  const avgCharWidthRatio = 0.55; 
+  const calculatedSize = maxWidth / (Math.max(1, longestLine) * avgCharWidthRatio);
+  const fontSize = Math.min(96, Math.floor(calculatedSize));
 
   return (
     <div
@@ -71,7 +78,7 @@ export const SocialFlyer = ({ data, branding }: SocialFlyerProps) => {
         {logo_url ? (
           <img src={logo_url} alt="Logo" style={{ height: "60px", objectFit: "contain" }} />
         ) : (
-          <div style={{ fontSize: "32px", fontWeight: "bold", letterSpacing: "-1px" }}>{event_name}</div>
+          <div style={{ fontSize: "32px", fontWeight: "bold", letterSpacing: "-1px", display: "flex" }}>{event_name}</div>
         )}
         <div
           style={{
@@ -140,21 +147,23 @@ export const SocialFlyer = ({ data, branding }: SocialFlyerProps) => {
         </div>
 
         {/* Name */}
-        <div
-          style={{
-            fontSize: recipient_name.length > 20 ? "48px" : recipient_name.length > 15 ? "64px" : "84px",
-            fontWeight: 900,
-            textAlign: "center",
-            letterSpacing: "-2px",
-            lineHeight: 1,
-            marginBottom: "20px",
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "center",
-            maxWidth: "900px",
-          }}
-        >
-          {recipient_name}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%", maxWidth: "900px", marginBottom: "20px" }}>
+          {nameLines.map((line, idx) => (
+            <div
+              key={idx}
+              style={{
+                display: "flex",
+                fontSize: fontSize,
+                fontWeight: 900,
+                textAlign: "center",
+                letterSpacing: "-2px",
+                lineHeight: 1,
+                marginBottom: idx === nameLines.length - 1 ? 0 : 5,
+              }}
+            >
+              {line}
+            </div>
+          ))}
         </div>
         
         {/* Decorative Line */}

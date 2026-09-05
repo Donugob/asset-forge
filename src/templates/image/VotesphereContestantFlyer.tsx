@@ -1,4 +1,4 @@
-import React from 'react';
+import { formatContestantName } from '@/lib/typography';
 
 export const VotesphereContestantFlyer = ({
   data,
@@ -12,6 +12,15 @@ export const VotesphereContestantFlyer = ({
   const avatarUrl = data.avatar_url || "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&h=800&fit=crop";
   const logoUrl = data.logo_url || "https://www.votesphere.com.ng/logo.png";
   const brandName = data.brand_name || "Votesphere";
+
+  const nameLines = formatContestantName(data.recipient_name || "Amina Bello");
+  const longestLine = Math.max(...nameLines.map(l => l.length));
+  
+  // Responsive cohesive font sizing based on the widest line
+  const maxWidth = 480; 
+  const avgCharWidthRatio = 0.60; // Tighter estimation for bold Inter
+  const calculatedSize = maxWidth / (Math.max(1, longestLine) * avgCharWidthRatio);
+  const fontSize = Math.min(105, Math.floor(calculatedSize));
 
   return (
     <div
@@ -32,23 +41,10 @@ export const VotesphereContestantFlyer = ({
         viewBox="0 0 1080 1080"
         fill="none"
       >
-        {/* Large sweeping curves */}
-        <path
-          d="M1080 0 C 1080 500, 500 1080, 0 1080 L 0 0 Z"
-          fill="rgba(255, 255, 255, 0.03)"
-        />
-        <path
-          d="M0 200 C 600 200, 1080 600, 1080 1080 L 0 1080 Z"
-          fill="rgba(255, 255, 255, 0.02)"
-        />
-        {/* Colored overlay shapes */}
-        <path
-          d="M1080 500 C 800 500, 500 800, 500 1080 L 1080 1080 Z"
-          fill={accentColor}
-          opacity="0.08"
-        />
+        <path d="M1080 0 C 1080 500, 500 1080, 0 1080 L 0 0 Z" fill="rgba(255, 255, 255, 0.03)" />
+        <path d="M0 200 C 600 200, 1080 600, 1080 1080 L 0 1080 Z" fill="rgba(255, 255, 255, 0.02)" />
+        <path d="M1080 500 C 800 500, 500 800, 500 1080 L 1080 1080 Z" fill={accentColor} opacity="0.08" />
         
-        {/* Tech Grid dots in corner */}
         <g opacity="0.2" fill={accentColor}>
           <circle cx="950" cy="150" r="3" />
           <circle cx="980" cy="150" r="3" />
@@ -62,42 +58,13 @@ export const VotesphereContestantFlyer = ({
         </g>
       </svg>
 
-      {/* Subtle Glows */}
-      <div
-        style={{
-          position: "absolute",
-          top: "-150px",
-          left: "-150px",
-          width: "600px",
-          height: "600px",
-          backgroundColor: accentColor,
-          borderRadius: "50%",
-          opacity: 0.15,
-          filter: "blur(120px)",
-          display: "flex",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          bottom: "-50px",
-          right: "-50px",
-          width: "800px",
-          height: "800px",
-          backgroundColor: accentColor,
-          borderRadius: "50%",
-          opacity: 0.1,
-          filter: "blur(120px)",
-          display: "flex",
-        }}
-      />
+      <div style={{ position: "absolute", top: "-150px", left: "-150px", width: "600px", height: "600px", backgroundColor: accentColor, borderRadius: "50%", opacity: 0.15, filter: "blur(120px)", display: "flex" }} />
+      <div style={{ position: "absolute", bottom: "-50px", right: "-50px", width: "800px", height: "800px", backgroundColor: accentColor, borderRadius: "50%", opacity: 0.1, filter: "blur(120px)", display: "flex" }} />
 
       {/* Main Container */}
       <div style={{ display: "flex", flexDirection: "column", width: "100%", height: "100%", padding: "60px", zIndex: 10 }}>
         
-        {/* Header */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", width: "100%" }}>
-          {/* Logo & Brand */}
           <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginRight: 16 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -108,7 +75,6 @@ export const VotesphereContestantFlyer = ({
             </div>
           </div>
 
-          {/* Event Title */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", maxWidth: "50%" }}>
             <span style={{ color: "rgba(255,255,255,0.7)", fontSize: 24, fontWeight: 600, letterSpacing: -0.5, textAlign: "right" }}>
               {data.event_name || "LAWSAN SE MERIT AWARDS"}
@@ -119,85 +85,28 @@ export const VotesphereContestantFlyer = ({
         {/* Middle Body */}
         <div style={{ display: "flex", flex: 1, marginTop: "80px", position: "relative" }}>
           
-          {/* Text Section (Left) */}
           <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", width: "50%", zIndex: 10 }}>
-            {(() => {
-              const nameStr = data.recipient_name || "Amina Bello";
-              let parts = nameStr.trim().split(/\s+/);
-              
-              // Smart Abbreviation for 3+ words
-              if (parts.length >= 3) {
-                const totalLen = parts.join(" ").length;
-                if (totalLen > 15) {
-                  // Abbreviate middle names (e.g. Emmanuel U. Emeka)
-                  for (let i = 1; i < parts.length - 1; i++) {
-                    parts[i] = parts[i][0] + ".";
-                  }
-                }
-                // If still too long, abbreviate first name as well (e.g. E. U. Emeka)
-                if (parts.join(" ").length > 18) {
-                  parts[0] = parts[0][0] + ".";
-                }
-              }
-
-              const line1 = parts[0] || "";
-              const line2 = parts.slice(1).join(" ");
-              
-              // Responsive Font Sizing Calculation
-              // Max width available is ~480px. Average bold character width is ~0.65em.
-              const getSize = (text: string) => {
-                if (!text) return 100;
-                const maxWidth = 480; 
-                const avgCharWidthRatio = 0.65;
-                const calculatedSize = maxWidth / (text.length * avgCharWidthRatio);
-                // Cap the maximum font size at 105px so it doesn't get ridiculously huge
-                return Math.min(105, Math.floor(calculatedSize));
-              };
-
-              return (
-                <div style={{ display: "flex", flexDirection: "column", width: "100%", wordBreak: "break-word" }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      color: "#ffffff",
-                      fontSize: getSize(line1),
-                      fontWeight: 900,
-                      letterSpacing: -2,
-                      lineHeight: 1,
-                      marginBottom: line2 ? -5 : 20, // Tighter spacing if two lines
-                    }}
-                  >
-                    {line1}
-                  </div>
-                  {line2 && (
-                    <div
-                      style={{
-                        display: "flex",
-                        color: "#ffffff",
-                        fontSize: getSize(line2),
-                        fontWeight: 900,
-                        letterSpacing: -2,
-                        lineHeight: 1,
-                        marginBottom: 24,
-                      }}
-                    >
-                      {line2}
-                    </div>
-                  )}
+            <div style={{ display: "flex", flexDirection: "column", width: "100%", wordBreak: "break-word", marginBottom: 24 }}>
+              {nameLines.map((line, idx) => (
+                <div
+                  key={idx}
+                  style={{
+                    display: "flex",
+                    color: "#ffffff",
+                    fontSize: fontSize,
+                    fontWeight: 900,
+                    letterSpacing: -2,
+                    lineHeight: 1,
+                    marginBottom: idx === nameLines.length - 1 ? 0 : (nameLines.length > 1 ? 5 : 20),
+                  }}
+                >
+                  {line}
                 </div>
-              );
-            })()}
+              ))}
+            </div>
             
-            {/* Category */}
             <div style={{ display: "flex" }}>
-              <span
-                style={{
-                  color: accentColor,
-                  fontSize: 36,
-                  fontWeight: 400,
-                  letterSpacing: -1,
-                }}
-              >
+              <span style={{ color: accentColor, fontSize: 36, fontWeight: 400, letterSpacing: -1 }}>
                 {data.title || "Icon of the Year"}
               </span>
             </div>
