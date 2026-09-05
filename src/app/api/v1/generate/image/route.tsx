@@ -5,24 +5,16 @@ import { SocialFlyer } from "@/templates/image/SocialFlyer";
 import { SquarePitchFlyer } from "@/templates/image/SquarePitchFlyer";
 import { VotesphereContestantFlyer } from "@/templates/image/VotesphereContestantFlyer";
 import { validateApiKey } from "@/lib/api-auth";
-import { montserratBoldBase64, montserratRegularBase64 } from "@/lib/fonts";
-import { Buffer } from "node:buffer";
 
 export const runtime = 'edge';
 
-// Convert base64 to precise ArrayBuffer safely
-function getFontBuffer(base64: string): ArrayBuffer {
-  const buf = Buffer.from(base64, 'base64');
-  return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
-}
-
-// Statically instantiated outside request handler (happens during cold boot initialization)
-const fontBold = getFontBuffer(montserratBoldBase64);
-const fontRegular = getFontBuffer(montserratRegularBase64);
+// We use relative path for import.meta.url so Vercel natively bundles the font file at build-time.
+// This resolves instantly on cold boot.
+const fontBoldPromise = fetch(new URL('./fonts/Montserrat-Bold.ttf', import.meta.url)).then(res => res.arrayBuffer()).catch(() => null);
+const fontRegularPromise = fetch(new URL('./fonts/Montserrat-Regular.ttf', import.meta.url)).then(res => res.arrayBuffer()).catch(() => null);
 
 export async function POST(req: NextRequest) {
   try {
-    // Note: Database API key validation can take 3-5 seconds if Neon PostgreSQL is sleeping (cold start).
     const authError = await validateApiKey(req);
     if (authError) return authError;
 
@@ -48,12 +40,21 @@ export async function POST(req: NextRequest) {
       element = <SocialFlyer data={data} branding={branding} />;
     }
 
+    let cachedFontBold = await fontBoldPromise;
+    let cachedFontRegular = await fontRegularPromise;
+
+    if (!cachedFontBold || !cachedFontRegular) {
+      // Fallback
+      cachedFontBold = await fetch(new URL("https://github.com/vercel/satori/raw/main/playground/public/Roboto-Regular.ttf", "https://example.com")).then(res => res.arrayBuffer());
+      cachedFontRegular = cachedFontBold;
+    }
+
     const imageResponse = new ImageResponse(element, {
       width,
       height,
       fonts: [
-        { name: "Inter", data: fontBold, weight: 700, style: "normal" },
-        { name: "Inter", data: fontRegular, weight: 400, style: "normal" },
+        { name: "Inter", data: cachedFontBold!, weight: 700, style: "normal" },
+        { name: "Inter", data: cachedFontRegular!, weight: 400, style: "normal" },
       ],
       headers: {
         'Cache-Control': 'public, max-age=31536000, immutable',
