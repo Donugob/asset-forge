@@ -6,17 +6,10 @@ export async function uploadToImageKit(
   const privateKey = process.env.IMAGEKIT_PRIVATE_KEY;
   if (!privateKey) throw new Error('IMAGEKIT_PRIVATE_KEY is missing');
 
-  function arrayBufferToBase64(buf: ArrayBuffer) {
-    let binary = '';
-    const bytes = new Uint8Array(buf);
-    for (let i = 0; i < bytes.byteLength; i++) {
-      binary += String.fromCharCode(bytes[i]);
-    }
-    return btoa(binary);
-  }
-
+  const fileObj = new File([buffer], fileName, { type: 'image/png' });
+  
   const formData = new FormData();
-  formData.append('file', arrayBufferToBase64(buffer));
+  formData.append('file', fileObj);
   formData.append('fileName', fileName);
   formData.append('folder', folder);
   formData.append('useUniqueFileName', 'true');
