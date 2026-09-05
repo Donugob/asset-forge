@@ -123,46 +123,67 @@ export const VotesphereContestantFlyer = ({
           <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", width: "50%", zIndex: 10 }}>
             {(() => {
               const nameStr = data.recipient_name || "Amina Bello";
-              const parts = nameStr.split(" ");
-              const first = parts[0];
-              const rest = parts.slice(1).join(" ");
+              let parts = nameStr.trim().split(/\s+/);
               
+              // Smart Abbreviation for 3+ words
+              if (parts.length >= 3) {
+                const totalLen = parts.join(" ").length;
+                if (totalLen > 15) {
+                  // Abbreviate middle names (e.g. Emmanuel U. Emeka)
+                  for (let i = 1; i < parts.length - 1; i++) {
+                    parts[i] = parts[i][0] + ".";
+                  }
+                }
+                // If still too long, abbreviate first name as well (e.g. E. U. Emeka)
+                if (parts.join(" ").length > 18) {
+                  parts[0] = parts[0][0] + ".";
+                }
+              }
+
+              const line1 = parts[0] || "";
+              const line2 = parts.slice(1).join(" ");
+              
+              // Responsive Font Sizing Calculation
+              // Max width available is ~480px. Average bold character width is ~0.65em.
               const getSize = (text: string) => {
-                if (!text) return 110;
-                if (text.length > 15) return 56;
-                if (text.length > 10) return 72;
-                if (text.length > 7) return 90;
-                return 110;
+                if (!text) return 100;
+                const maxWidth = 480; 
+                const avgCharWidthRatio = 0.65;
+                const calculatedSize = maxWidth / (text.length * avgCharWidthRatio);
+                // Cap the maximum font size at 105px so it doesn't get ridiculously huge
+                return Math.min(105, Math.floor(calculatedSize));
               };
 
               return (
-                <div style={{ display: "flex", flexDirection: "column" }}>
+                <div style={{ display: "flex", flexDirection: "column", width: "100%", wordBreak: "break-word" }}>
                   <div
                     style={{
                       display: "flex",
                       color: "#ffffff",
-                      fontSize: getSize(first),
+                      fontSize: getSize(line1),
                       fontWeight: 900,
-                      letterSpacing: -4,
+                      letterSpacing: -2,
                       lineHeight: 1,
-                      marginBottom: -10,
+                      marginBottom: line2 ? -5 : 20, // Tighter spacing if two lines
                     }}
                   >
-                    {first}
+                    {line1}
                   </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      color: "#ffffff",
-                      fontSize: getSize(rest),
-                      fontWeight: 900,
-                      letterSpacing: -4,
-                      lineHeight: 1,
-                      marginBottom: 24,
-                    }}
-                  >
-                    {rest}
-                  </div>
+                  {line2 && (
+                    <div
+                      style={{
+                        display: "flex",
+                        color: "#ffffff",
+                        fontSize: getSize(line2),
+                        fontWeight: 900,
+                        letterSpacing: -2,
+                        lineHeight: 1,
+                        marginBottom: 24,
+                      }}
+                    >
+                      {line2}
+                    </div>
+                  )}
                 </div>
               );
             })()}
