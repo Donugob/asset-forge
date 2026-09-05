@@ -1,5 +1,3 @@
-import { Buffer } from 'node:buffer';
-
 export async function uploadToImageKit(
   buffer: ArrayBuffer,
   fileName: string,
@@ -8,34 +6,25 @@ export async function uploadToImageKit(
   const privateKey = process.env.IMAGEKIT_PRIVATE_KEY;
   if (!privateKey) throw new Error('IMAGEKIT_PRIVATE_KEY is missing');
 
-  const base64String = Buffer.from(buffer).toString('base64');
-  const dataUri = `data:image/png;base64,${base64String}`;
-
-  const boundary = '----WebKitFormBoundary7MA4YWxkTrZu0gW';
-  const body = 
-    `--${boundary}\r\n` +
-    `Content-Disposition: form-data; name="file"\r\n\r\n` +
-    `${dataUri}\r\n` +
-    `--${boundary}\r\n` +
-    `Content-Disposition: form-data; name="fileName"\r\n\r\n` +
-    `${fileName}\r\n` +
-    `--${boundary}\r\n` +
-    `Content-Disposition: form-data; name="folder"\r\n\r\n` +
-    `${folder}\r\n` +
-    `--${boundary}\r\n` +
-    `Content-Disposition: form-data; name="useUniqueFileName"\r\n\r\n` +
-    `true\r\n` +
-    `--${boundary}--`;
+  const formData = new FormData();
+  
+  // Directly append the binary buffer as a Blob.
+  // The 3rd argument (fileName) is CRITICAL: it forces the Edge runtime to properly 
+  // format the Content-Disposition header so ImageKit recognizes it as a file.
+  formData.append('file', new Blob([buffer], { type: 'image/png' }), fileName);
+  
+  formData.append('fileName', fileName);
+  formData.append('folder', folder);
+  formData.append('useUniqueFileName', 'true');
 
   const authHeader = `Basic ${btoa(privateKey + ':')}`;
 
   const response = await fetch('https://upload.imagekit.io/api/v1/files/upload', {
     method: 'POST',
     headers: {
-      'Authorization': authHeader,
-      'Content-Type': `multipart/form-data; boundary=${boundary}`
+      Authorization: authHeader,
     },
-    body: body,
+    body: formData,
   });
 
   if (!response.ok) {
