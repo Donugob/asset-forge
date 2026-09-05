@@ -56,3 +56,11 @@ export const apiKey = pgTable("api_key", {
 	lastUsedAt: timestamp("last_used_at"),
 	isRevoked: boolean("is_revoked").notNull().default(false)
 });
+
+export const generatedAsset = pgTable("generated_asset", {
+	id: text("id").primaryKey(),
+	payloadHash: text("payload_hash").notNull().unique(),
+	cdnUrl: text("cdn_url").notNull(),
+	format: text("format").notNull(),
+	createdAt: timestamp("created_at").notNull().defaultNow()
+});
