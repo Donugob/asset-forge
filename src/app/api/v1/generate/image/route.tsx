@@ -7,10 +7,12 @@ import { VotesphereContestantFlyer } from "@/templates/image/VotesphereContestan
 import { validateApiKey } from "@/lib/api-auth";
 
 export const runtime = 'edge';
+export const preferredRegion = 'cle1'; // Cleveland (closest to Neon us-east-2 DB)
 
-// Memory cache for Edge runtime to avoid fetching fonts repeatedly
-let cachedFontBold: ArrayBuffer | null = null;
-let cachedFontRegular: ArrayBuffer | null = null;
+// Vercel Edge automatically bundles these local assets via Webpack when using import.meta.url
+// We start the fetch globally so it happens during cold boot and is instantly available to the handler
+const fontBoldPromise = fetch(new URL('../../../../../../public/fonts/Montserrat-Bold.ttf', import.meta.url)).then(res => res.arrayBuffer()).catch(() => null);
+const fontRegularPromise = fetch(new URL('../../../../../../public/fonts/Montserrat-Regular.ttf', import.meta.url)).then(res => res.arrayBuffer()).catch(() => null);
 
 export async function POST(req: NextRequest) {
   try {
@@ -39,21 +41,14 @@ export async function POST(req: NextRequest) {
       element = <SocialFlyer data={data} branding={branding} />;
     }
 
-    // Load fonts (Edge compatible)
+    // Await the globally bundled fonts (resolves instantly if already fetched during worker boot)
+    let cachedFontBold = await fontBoldPromise;
+    let cachedFontRegular = await fontRegularPromise;
+
     if (!cachedFontBold || !cachedFontRegular) {
-      const origin = req.nextUrl.origin;
-      const [boldRes, regularRes] = await Promise.all([
-        fetch(`${origin}/fonts/Montserrat-Bold.ttf`),
-        fetch(`${origin}/fonts/Montserrat-Regular.ttf`)
-      ]);
-      
-      if (boldRes.ok && regularRes.ok) {
-        cachedFontBold = await boldRes.arrayBuffer();
-        cachedFontRegular = await regularRes.arrayBuffer();
-      } else {
+        // Absolute fallback (almost never hit)
         cachedFontBold = await fetch(new URL("https://github.com/vercel/satori/raw/main/playground/public/Roboto-Regular.ttf", "https://example.com")).then(res => res.arrayBuffer());
         cachedFontRegular = cachedFontBold;
-      }
     }
 
     const imageResponse = new ImageResponse(element, {
